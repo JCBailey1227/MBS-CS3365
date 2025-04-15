@@ -6,7 +6,7 @@ body
 {
     overflow: auto;
     margin: 0;
-    background-image: url("images/BG.png");
+    background-image: url("../images/BG.png");
     background-repeat: no-repeat;
     background-position: top;
     background-size: 100% auto; 

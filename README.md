@@ -1,2 +1,3 @@
 # MBS-CS3365
 Movie Booking System for CS-3365
+The Movie Booking System is a web-based platform that simplifies the process of purchasing movie tickets. Users can register, browse available movies, and book seats online, avoiding long lines at the theater. Tickets can be printed or shown as a code on a mobile device. Theater staff can access ticket sales and revenue reports through the admin interface. The system is designed to improve efficiency for both customers and theater operations.
