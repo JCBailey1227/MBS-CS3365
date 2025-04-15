@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel = "stylesheet" href = "seat.css">
+    <title>Movie Booking</title>
+    <link rel="icon" type="image/x-icon" href="../images/Favicon.webp">
+</head>
+
+<body>
+  <div class=fade-in>
+    <button  class = "backbutton"><a class = "link" id = "link" href = "../index.html">Back</a></button>
+
+<!--Available Movies-->
+<div class = "movie-container">
+    <label>Pick a Movie:</label>
+    <select id = "movie">
+    <option value = "64">Minecraft Movie ($64)</option>
+    <option value = "10">Lord of the Rings($10)
+    <option value = "8">Ghost Busters ($8)</option>
+    <option value = "9">Silence of the Lambs ($9)</option>
+    </select>
+</div> 
+
+<!-- Labels -->
+<ul class = "showcase">
+    <li>
+<div class = "seat"></div>
+<small>Available</small>
+    </li>
+    <li>
+<div class = "seat selected"></div>
+<small>Selected</small>
+    </li>
+      <li>
+<div classs = "seat occupied"></div>>
+<small>Occupied</small>
+      </li></ul>
+
+
+<div class="container">
+<!-- Fake movie screen -->
+<div class="screen"></div>
+
+<!-- Seats for Selection -->
+    <div class="row">
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+    </div>
+    <div class="row">
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat occupied"></div>
+      <div class="seat occupied"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+    </div>
+    <div class="row">
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat occupied"></div>
+      <div class="seat occupied"></div>
+    </div>
+    <div class="row">
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+    </div>
+    <div class="row">
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat occupied"></div>
+      <div class="seat occupied"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+    </div>
+    <div class="row">
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat"></div>
+      <div class="seat occupied"></div>
+      <div class="seat occupied"></div>
+      <div class="seat occupied"></div>
+      <div class="seat"></div>
+    </div>
+  </div>
+
+<!-- User selection label -->
+<p class = "text">
+You have selected <span id = "count">0</span> seats for a price of $<span id = "total">0</span>
+</p>
+
+<button type = "submit" class = "booknow"><a class = "booknow" id = "link" href = "submission.html">Book Now</a></button>
+
+<script src = "seat.js"></script> 
+</div>
+</body>
+</html>

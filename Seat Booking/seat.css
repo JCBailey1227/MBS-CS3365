@@ -1,0 +1,283 @@
+* {
+  box-sizing: border-box;
+}
+/***Organizes Elements on the screen***/
+.row {
+  display: flex;
+}
+/*** Body ***/
+body {
+  overflow: auto;
+  background-color: #242333;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-family: 'Lato', sans-serif;
+  margin: 0;
+}
+
+/*** Back Button ***/
+.backbutton{
+  position: fixed;    
+  top: 0px;         
+  left: 10px;         
+  z-index: 1000;    
+  padding: 5px 5px;
+  font-size: 16px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  color: white;
+  border-radius: 5px;
+  border:0; 
+  cursor: pointer;
+}
+/************** Banner Menu elements **************/
+
+/* Buttons CSS */
+.submit /*Button shape*/
+{
+  padding: 5px 5px;
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 5px;
+  border:0;   
+}
+.link /*Button Text*/
+{
+  color:black;
+  background-color: transparent;
+  transition-duration: 0.4s;
+  letter-spacing: 3px;
+  font-size: 12px; 
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.link:hover/*Button drop shadow*/
+{ 
+  text-shadow: 2px 2px 6px rgb(24, 23, 23); /* Add shadow to text instead of a box */
+  background-color: rgba(0, 0, 0, 0); /* Ensure background remains transparent */
+  
+}
+.buttonRow{ /*Button Alignment*/
+  position: absolute;
+  top: 30px;
+  left: 125px;
+}
+/***************************************************************************************************/
+
+
+/***Book Now Button***/
+button{
+  padding: 15px 40px;
+  background: #fff;
+  border:0;
+  color: #242333;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: helvetica;
+  font-size: 12px;
+  letter-spacing: 3px;
+  position: relative;
+  transition:         all .4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  cursor: pointer;
+  display: block;
+  margin: 50px auto;
+  border-radius: 10px;
+  border: solid #6feaf6 0.5px;
+}
+/***Button Hover Functons and Display***/
+button::after,
+button::before{
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0px;
+  transform: translateY(-50%);
+    opacity: 0;
+  transition:         all .4s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+button::after{
+    width: 30px;
+    height: 1px;
+    background: #242333;
+    transform: translateX(-3px);
+    margin-top: 0px;
+}
+button::before{
+    content: "";
+    transform: rotate(-135deg) translateX(50%);
+    width: 11px;
+    height: 11px;
+    background: transparent;
+    border-left: 1px solid #242333;
+    border-bottom: 1px solid #242333;
+  margin-top: -1px;
+}
+button:hover{
+  padding: 15px 60px 15px 20px;
+}
+button:hover::after,
+button:hover::before{
+  opacity: 1;
+  right: 15px;
+}
+/**Removes Line under 'Book Now' on Button**/
+.booknow{
+  text-decoration: none;
+}
+
+
+/**Seat Selection**/
+.movie-container {
+  margin: 20px 0;
+}
+.movie-container select {
+  background-color: #fff;
+  border: 0;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-left: 10px;
+  padding: 5px 15px 5px 15px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.container {
+  perspective: 1000px;
+  margin-bottom: 30px;
+}
+
+/**Seats**/
+.seat {
+  background-color: #444451;
+  height: 12px;
+  width: 15px;
+  margin: 3px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.seat.selected {
+  background-color: #6feaf6;
+}
+.seat.occupied {
+  background-color: #fff;
+}
+.seat:not(.occupied):hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+.showcase .seat:not(.occupied):hover {
+  cursor: default;
+  transform: scale(1);
+}
+/** Splits seats to add aisle**/
+.seat:nth-of-type(2) {
+  margin-right: 18px;
+}
+.seat:nth-last-of-type(2) {
+  margin-left: 18px;
+}
+
+/** Seat Legend**/
+.showcase {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #777;
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+}
+.showcase li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+}
+.showcase li small {
+  margin-left: 2px;
+}
+
+/** Movie Screen **/ 
+.screen {
+  background-color: #fff;
+  height: 70px;
+  width: 100%;
+  margin: 15px 0;
+  transform: rotateX(-45deg);
+  box-shadow: 0 3px 10px rgba(255, 255, 255, 0.7);
+}
+
+/** Selection Text**/
+p.text {
+  margin: 5px 0;
+}
+p.text span {
+  color: #6feaf6;
+}
+
+/**Confirmation Page**/
+.thanks{
+  color: black;
+  font-size: 50px;
+
+}
+.checkmark{
+  size: 5px;
+}
+.copyright{
+  align-items: bottom;
+
+}
+
+/*Fade in for elements*/
+.fade-in {
+  animation: fadeIn ease 1s;
+  -webkit-animation: fadeIn ease 1s;
+  -moz-animation: fadeIn ease 1s;
+  -o-animation: fadeIn ease 1s;
+  -ms-animation: fadeIn ease 1s;
+}
+@keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+@-moz-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+@-o-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+@-ms-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+}
+}
