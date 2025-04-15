@@ -1,13 +1,16 @@
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+
 * {
   box-sizing: border-box;
 }
 /***Organizes Elements on the screen***/
 .row {
   display: flex;
+  justify-content: center;
 }
+
 /*** Body ***/
 body {
-  overflow: auto;
   background-color: #242333;
   color: #fff;
   display: flex;
@@ -18,56 +21,6 @@ body {
   font-family: 'Lato', sans-serif;
   margin: 0;
 }
-
-/*** Back Button ***/
-.backbutton{
-  position: fixed;    
-  top: 0px;         
-  left: 10px;         
-  z-index: 1000;    
-  padding: 5px 5px;
-  font-size: 16px;
-  border: none;
-  background-color: rgba(0, 0, 0, 0);
-  color: white;
-  border-radius: 5px;
-  border:0; 
-  cursor: pointer;
-}
-/************** Banner Menu elements **************/
-
-/* Buttons CSS */
-.submit /*Button shape*/
-{
-  padding: 5px 5px;
-  background-color: rgba(0, 0, 0, 0);
-  border-radius: 5px;
-  border:0;   
-}
-.link /*Button Text*/
-{
-  color:black;
-  background-color: transparent;
-  transition-duration: 0.4s;
-  letter-spacing: 3px;
-  font-size: 12px; 
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-.link:hover/*Button drop shadow*/
-{ 
-  text-shadow: 2px 2px 6px rgb(24, 23, 23); /* Add shadow to text instead of a box */
-  background-color: rgba(0, 0, 0, 0); /* Ensure background remains transparent */
-  
-}
-.buttonRow{ /*Button Alignment*/
-  position: absolute;
-  top: 30px;
-  left: 125px;
-}
-/***************************************************************************************************/
-
 
 /***Book Now Button***/
 button{
@@ -201,6 +154,8 @@ button:hover::before{
   margin-left: 2px;
 }
 
+
+
 /** Movie Screen **/ 
 .screen {
   background-color: #fff;
@@ -221,7 +176,7 @@ p.text span {
 
 /**Confirmation Page**/
 .thanks{
-  color: black;
+  color: black
   font-size: 50px;
 
 }
@@ -231,53 +186,4 @@ p.text span {
 .copyright{
   align-items: bottom;
 
-}
-
-/*Fade in for elements*/
-.fade-in {
-  animation: fadeIn ease 1s;
-  -webkit-animation: fadeIn ease 1s;
-  -moz-animation: fadeIn ease 1s;
-  -o-animation: fadeIn ease 1s;
-  -ms-animation: fadeIn ease 1s;
-}
-@keyframes fadeIn {
-  0% {
-    opacity:0;
-  }
-  100% {
-    opacity:1;
-  }
-}
-@-moz-keyframes fadeIn {
-  0% {
-    opacity:0;
-  }
-  100% {
-    opacity:1;
-  }
-}
-@-webkit-keyframes fadeIn {
-  0% {
-    opacity:0;
-  }
-  100% {
-    opacity:1;
-  }
-}
-@-o-keyframes fadeIn {
-  0% {
-    opacity:0;
-  }
-  100% {
-    opacity:1;
-  }
-}
-@-ms-keyframes fadeIn {
-  0% {
-    opacity:0;
-  }
-  100% {
-    opacity:1;
-}
 }
