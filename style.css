@@ -251,6 +251,19 @@ body
   margin-right: 5px; /* Adds space between the image and the text */
 }
 
+/* Creating a pop-up for member information*/
+.popup {
+  display: none;
+  width: 250px;
+  height: 0px;
+  position: relative;
+  top:10px;
+  margin-right:0px;
+  color: white;
+  font-size: 16;
+  text-align: center;
+}
+
 /*About Us/Project Description*/
 .fade-text-container {
   position: absolute;

@@ -50,3 +50,8 @@ function changeToGifBackground() {
   document.body.style.backgroundImage = "url('images/BG.png')"; // Change to GIF background
 }
 */
+
+function togglePopup(id) {
+  const popup = document.getElementById(id);
+  popup.style.display = (popup.style.display == "block") ? "none" : "block";
+}
