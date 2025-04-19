@@ -194,7 +194,7 @@ body
   align-items: center;
   width: 100%;
   padding: 20px;
-  padding-top: 100px; /* Adjust this value to move the content down */
+  padding-top: 20px; /* Adjust this value to move the content down */
 }
 /*Each contact*/
 .contact-item {
@@ -227,7 +227,7 @@ body
 /*Email and Linkedin Link*/
 .contact-link {
   font-size: 18px;
-  color: black;
+  color: blue;
   text-decoration: none; /* Removes the underline from links */
   margin-bottom: 5px; /* Adds space between links */
 }
@@ -257,7 +257,7 @@ body
   bottom: 100px;
   right: 0px;
   width: fit-content; /*Adjusts width to fit content*/
-  max-width: 80%; /*limits the maximum width of the container*/
+  max-width: 70%; /*limits the maximum width of the container*/
   padding: 20px;
   box-sizing: border-box;
   background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 100%);
@@ -274,7 +274,7 @@ body
 }
 .fade-text {
   color: white;
-  font-size: 18px;
+  font-size: 20px;
   text-align: right; 
   margin: 0;
 }
