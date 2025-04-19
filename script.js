@@ -51,6 +51,9 @@ function changeToGifBackground() {
 }
 */
 
+/*
+Function Creates the ability to toggle a pop-up when the names are clicked telling the user a little about each team member
+*/
 function togglePopup(id) {
   const popup = document.getElementById(id);
   popup.style.display = (popup.style.display == "block") ? "none" : "block";
