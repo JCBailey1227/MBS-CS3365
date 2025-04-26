@@ -1,34 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"></head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel = "stylesheet" href = "style.css">
+    <link rel = "stylesheet" href = "browse.css">
     <title>MBS</title>
     <link rel = "icon" type = "image/x-icon" href = "../images/Favicon.PNG">
 </head>
-
+<div style="text-align: center; margin-top: 2rem;">
+  <input id="manual-imdb-id" type="text" placeholder="(tt...) WILL EVENTUALLY BE ADMIN ONLY" style="padding: 0.5rem; width: 300px;">
+  <button onclick="addMovieCard()">Add Movie</button>
+</div>
 <body>
-<!-- Banner for Top of Webpage -->
+    
+    <h1 class = "title">Browse Movies</h1>
+
+<!--  ********** HOVER TOP RIGHT CORNER OF MOVIES FOR CARD DELETE BUTTON ************* 
+      IF NO MOVIES ARE SHOWING, ADD THEM WITH ADD MOVIE BUTTON ON TOP USING "tt12345" CODE FROM IMDB URL
+      WHEN ON THE PAGE OF A MOVIE -->
+
+
+<!-- Banner for Top of Webpage 
 <div class = "fade-in">
     <div class = "banner">
-        <img class = logo src="../images/movies.png" alt="Page Logo"> 
+        <img class = logo src="../images/Favicon.png" alt="Page Logo"> 
     </div>
+-->
 
-<!-- Buttons -->
+ 
+ <h2 class="category">Playing Now</h2>
+
+ <div id="movie-search">
+    <input
+      type="text"
+      id="search-input"
+      placeholder="Search"
+      oninput="searchMovies()"
+    />
+  </div>
+<!-- Playing Now Grid-->
+<div class="menu-grid" id="playing-now-grid">
+</div>
+
+<!-- Upcoming Grid -->
+<h2 class="category">Upcoming</h2>
+<div class="menu-grid" id="upcoming-grid"></div>
+  
+  
+
+<!-- Buttons
 <div id="button-container"></div>
+-->
 
-<!-- Our Logo -->
+<!-- Our Logo 
 <div class = Quicklogo>
     <img src="../images/movies.png" alt="Page Logo"> 
     </div>
 
-
-
+-->
 
 </div> <!--fade in -->
 
-<script src = "../script.js"></script> 
+<script src="browse.js" defer></script>
 </body>
 </html>
+

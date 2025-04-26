@@ -1,0 +1,129 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 2em;  
+    background: #222225;
+  }
+ 
+  #movie-img {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+  }
+  .not-found {
+    color: red;
+    text-align: center;
+  } 
+  /* Movie Description and Detail Text Block */
+  #movie-details {
+    max-width: 600px;
+    margin: auto;
+  }
+  #movie-title {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: white;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  #movie-details strong {
+    font-weight: bold;
+    color: white;
+    font-size: 1.5rem;
+  }
+  #movie-description {
+        font-size: 1.2rem;
+        font-family: 'Segoe UI';
+        color: white;
+        text-align: center;
+        margin-bottom: 1rem;
+        border-radius: 10px;
+        padding: 1rem;
+  }
+  #movie-genre {
+    font-size: 1.5rem;
+    color: white;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  #movie-rating {
+    font-size: 1.5rem;
+    color: white;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  #movie-year {
+    font-size: 1.5rem;
+    color: white;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  /* End of Block */ 
+
+
+    /* Book Section */
+  #book-section {
+    text-align: center;
+    margin-top: 1em;
+  }
+  #book-button {
+    text-align: center;
+    padding: 0.75em 1.5em;
+    background-color: #007bff;
+    color: rgb(252, 252, 252);
+    text-decoration: none;
+    border-radius: 8px;
+    display: inline-block;
+  }
+  
+  #book-button:hover {
+    background-color: #0056b3; /* slightly darker on hover */
+  }
+  /* End of Book Section */
+
+
+  /* Review Section */
+  #review-section {
+    max-width: 600px;
+    margin: 2rem auto;
+    background: white;
+    padding: 1em;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  #review-input {
+    width: 100%;
+    padding: 0.5em;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  
+  #review-list {
+    margin-top: 1rem;
+  }
+  
+  .review-container {
+    display: flex;
+    padding: 0.5em 0;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    
+  }
+  
+  .review-container p {
+    margin: 0;
+  }
+  
+  .delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  /* End of Review Section */

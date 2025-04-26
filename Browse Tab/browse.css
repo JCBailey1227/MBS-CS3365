@@ -1,0 +1,151 @@
+#movie-search {
+  position: sticky;
+  bottom: 0;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #222225;
+    /*background: linear-gradient(to bottom, #131313, #303030);*/
+    color: rgb(255, 255, 255);
+    
+}
+
+
+#search-input {
+  width: 60%;
+  max-width: 400px;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+
+.menu-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 3rem;
+    border-bottom: white 2px solid;
+}
+
+.menu-grid a{
+    display: block;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+   transition: transform 0.2s ease;
+}
+
+/* When movie poster is hovered, filter is applied */
+.menu-grid a:hover{
+    transform: scale(1.08);
+    filter: box-shadow(0 10px 10px rgba(20, 20, 20, 1));    
+    transition: filter 0.1s;
+    position: relative;
+    text-align: center;
+
+}
+
+/* The movie posters in the grid */
+.menu-grid img{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+/* The card for each poster, not just the image */
+.movie-card{
+    position: relative;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+/* Set to 0 so it doesn't appear. DO NOT CHANGE */
+.movie-card:hover .movie-description{
+    opacity: 0;
+}
+
+ /* DO NOT TOUCH */
+.movie-description {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 1rem;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    
+  }
+
+  .delete-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: transparent;
+    border: none;
+    color: transparent;
+    font-weight: bold;
+    font-size: 18px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    z-index: 10; 
+  }
+  .delete-button:hover {
+    color: red;
+    background: #000000;
+    visibility: visible; 
+  }
+
+ /* No need for this, just keeping here for reference */ 
+.parental-rating {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #ffd700; 
+    text-transform: uppercase;
+  }
+
+
+/* Text categories */
+.category{
+    font-size: 3rem;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    margin: 2rem 0 1rem 0; 
+    text-align: center;     
+}
+
+.instructions{
+    font-size: 1.2rem;
+    color: rgb(255, 255, 255);
+    margin: 0 2rem; 
+    text-align: center; 
+}
+
+.title{
+    font-size: 4rem;
+    color:rgb(255, 255, 255);
+    margin: 2rem 0 1rem 0;
+    text-align: center;
+    box-shadow:rgba(0, 0, 0, 0.726);
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #c7c6c6;
+}

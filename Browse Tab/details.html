@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movie Details</title>
+  <link rel="stylesheet" href="details.css" />
+</head>
+<body>
+  <h3 class="help">If Book Seats button not linking, check href in details.html</h3>
+
+  <div id="movie-details">
+    <h1 id="movie-title"></h1>
+    <img id="movie-img" src="" alt="" />
+    <p id="movie-description"></p>
+    <p><strong>Genre:</strong> <span id="movie-genre"></span></p>
+    <p><strong>Rating:</strong> <span id="movie-rating"></span></p>
+    <p><strong>Release Year:</strong> <span id="movie-year"></span></p>
+  </div>
+
+  <!-- HREF FOR FAULTY SEATS.HTML LINKING -->
+  <div id="book-section">
+    <a id="book-button" href="http://127.0.0.1:5501/Seat%20Booking/seats.html">
+      Book Seats
+    </a>
+  </div>
+
+  <div id="review-section">
+    <h2>Reviews</h2>
+  
+    <!-- Write review -->
+    <textarea id="review-input" placeholder="How was the movie?" rows="4"></textarea>
+    <button onclick="submitReview()">Submit Review</button>
+  
+    <!-- Reviews -->
+    <div id="review-list" style="margin-top: 1rem;"></div>
+  </div>
+  
+
+  <script src="details.js"></script>
+
+</body>
+</html>
