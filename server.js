@@ -168,7 +168,8 @@ app.post("/book-seat", (req, res) => {
     "Accommodation": accommodation || "No",
     "Selected Seats": selectedSeats || "",
     "Payment Method": paymentMethod || "Credit Card",
-    "Confirmation Number": ticketNumber || "N/A"
+    "Confirmation Number": ticketNumber || "N/A",
+    "Status": "Active"
   });
 
   const newSheet = XLSX.utils.json_to_sheet(currentBookings);
@@ -262,6 +263,40 @@ app.get("/get-all-showtimes", (req, res) => {
 
   res.json(allShows);
 });
+
+app.post("/deactivate-booking", (req, res) => {
+  const { confirmationNumber } = req.body;
+
+  if (!confirmationNumber) {
+    return res.status(400).json({ message: "Confirmation Number missing." });
+  }
+
+  const workbook = XLSX.readFile(BOOKINGS_FILE);
+  const sheet = workbook.Sheets["Bookings"];
+  const bookings = XLSX.utils.sheet_to_json(sheet);
+
+  let found = false;
+  for (let booking of bookings) {
+    if (booking["Confirmation Number"] === confirmationNumber) {
+      booking.Status = "Not Active";
+      found = true;
+      break;
+    }
+  }
+
+  if (!found) {
+    return res.status(404).json({ message: "Booking not found." });
+  }
+
+  const newSheet = XLSX.utils.json_to_sheet(bookings);
+  const newWb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(newWb, newSheet, "Bookings");
+  XLSX.writeFile(newWb, BOOKINGS_FILE);
+
+  res.json({ message: "Booking deactivated successfully." });
+});
+
+
 
 app.listen(3000, () => {
     console.log("Server running on http://localhost:3000");

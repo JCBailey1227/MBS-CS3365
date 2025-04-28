@@ -187,24 +187,26 @@
   </div>
 
   <div class="bookings-section">
-    <h2>All Bookings</h2>
-    <button onclick="fetchBookings()">View All Bookings</button>
-    <table id="bookings-table" style="display:none;">
-      <thead>
-        <tr>
-          <th>User Email</th>
-          <th>Movie</th>
-          <th>Location</th>
-          <th>Date</th>
-          <th>Time</th>
-          <th>Seats</th>
-          <th>Accommodation</th>
-        </tr>
-      </thead>
-      <tbody id="bookings-body"></tbody>
-    </table>
-  </div>
-
+  <h2>All Bookings</h2>
+  <button onclick="fetchBookings()">View All Bookings</button>
+  <table id="bookings-table" style="display:none;">
+    <thead>
+      <tr>
+        <th>User Email</th>
+        <th>Movie</th>
+        <th>Location</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Seats</th>
+        <th>Accommodation</th>
+        <th>Confirmation #</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="bookings-body"></tbody>
+  </table>
+</div>
   <script src="admin.js"></script>
   <script>
     function logout() {

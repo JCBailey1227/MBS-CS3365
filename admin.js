@@ -46,6 +46,7 @@ document.getElementById('remove-showtime-form').addEventListener('submit', async
 });
 
 // Fetch All Bookings
+// Fetch All Bookings
 async function fetchBookings() {
   const res = await fetch('/admin-get-bookings', {
     method: 'GET',
@@ -67,9 +68,33 @@ async function fetchBookings() {
       <td>${b.Time}</td>
       <td>${b["Selected Seats"]}</td>
       <td>${b.Accommodation}</td>
+      <td>${b["Confirmation Number"] || "N/A"}</td>
+      <td>${b.Status || "Active"}</td>
+      <td>
+        ${b.Status === "Active" ? `<button onclick="deactivateBooking('${b["Confirmation Number"]}')">Deactivate</button>` : ''}
+      </td>
     `;
     tbody.appendChild(row);
   });
 
   table.style.display = 'table';
 }
+
+// Deactivate Booking
+async function deactivateBooking(confirmationNumber) {
+  if (!confirmationNumber) return alert("Invalid booking.");
+
+  const res = await fetch('/deactivate-booking', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ confirmationNumber })
+  });
+
+  const msg = await res.json();
+  alert(msg.message);
+
+  if (res.ok) {
+    fetchBookings(); // Refresh after deactivation
+  }
+}
+

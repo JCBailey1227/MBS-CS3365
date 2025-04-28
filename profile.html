@@ -153,7 +153,9 @@ async function fetchBookings() {
       s.Times?.toLowerCase().trim() === b.Time?.toLowerCase().trim()
     );
 
-    if (exists) {
+    const isActive = !b.Status || b.Status === "Active"; // 🎯 Treat missing status as Active
+
+    if (exists && isActive) {
       card.innerHTML = `
         <p>🎥 <strong>${b["Movie Name"]}</strong></p>
         <p>📍 Location: ${b.Location}</p>
@@ -165,13 +167,14 @@ async function fetchBookings() {
     } else {
       card.innerHTML = `
         <p>🎥 <strong>${b["Movie Name"]}</strong></p>
-        <p>🚫 <strong>Sorry, your movie ticket was revoked. Please be on the lookout for refunds.</strong></p>
+        <p>🚫 <strong>Sorry, your movie ticket is no longer active. Please be on the lookout for refunds.</strong></p>
       `;
     }
 
     container.appendChild(card);
   });
 }
+
 
 
     document.getElementById('profile-form').addEventListener('submit', async function(e) {
