@@ -14,14 +14,6 @@
 
     <h1 id="movie-title" class="movie-title">Movie Title</h1>
 
-    <div class="special-accommodation">
-      <label for="accommodation-select">Need Special Accommodation?</label>
-      <select id="accommodation-select">
-        <option value="No">No</option>
-        <option value="Yes">Yes</option>
-      </select>
-    </div>
-
     <ul class="showcase">
       <li><div class="seat"></div><small>Available (White)</small></li>
       <li><div class="seat occupied"></div><small>Occupied (Black)</small></li>
@@ -43,6 +35,15 @@
     <p class="text">
       You have selected <span id="count">0</span> seats for a price of $<span id="total">0</span>
     </p>
+
+    <!-- 🎯 Moved accommodation dropdown here with same styling -->
+    <div class="text special-accommodation">
+      <label for="accommodation-select">Need Special Accommodation?</label><br>
+      <select id="accommodation-select">
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+      </select>
+    </div>
 
     <button type="button" id="booknow-button" class="booknow">Proceed to Payment</button>
 
