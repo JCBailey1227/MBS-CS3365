@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Page</title>
+  <link rel="stylesheet" href="seat.css">
+</head>
+<body>
+  <div class="fade-in">
+    <h1 style="text-align: center;">Payment Details</h1>
+    <form id="payment-form" style="max-width: 500px; margin: 0 auto;">
+
+      <h3 style="text-align: center;">Choose Payment Method</h3>
+      <select id="payment-method" required style="width: 100%; padding: 12px; margin-bottom: 20px;">
+        <option value="">--Select Payment Method--</option>
+        <option value="Credit Card">💳 Credit Card</option>
+        <option value="Venmo">🟦 Venmo</option>
+        <option value="PayPal">🟨 PayPal</option>
+      </select>
+
+      <!-- Card fields initially hidden -->
+      <input type="text" id="card-name" placeholder="Cardholder Name" style="display: none; width: 100%; padding: 12px; margin-bottom: 10px;">
+      <input type="text" id="card-number" placeholder="Card Number" style="display: none; width: 100%; padding: 12px; margin-bottom: 10px;">
+      <input type="text" id="expiry" placeholder="Expiry Date (MM/YY)" style="display: none; width: 100%; padding: 12px; margin-bottom: 10px;">
+      <input type="password" id="cvv" placeholder="CVV" style="display: none; width: 100%; padding: 12px; margin-bottom: 20px;">
+
+      <button type="submit" class="booknow">Confirm Booking</button>
+    </form>
+  </div>
+
+  <script src="purchase.js"></script>
+  <script>
+    // 🎯 Dynamically show/hide card fields based on payment method
+    document.getElementById('payment-method').addEventListener('change', () => {
+      const method = document.getElementById('payment-method').value;
+      const cardFields = ['card-name', 'card-number', 'expiry', 'cvv'];
+
+      cardFields.forEach(id => {
+        const field = document.getElementById(id);
+        if (method === "Credit Card") {
+          field.style.display = 'block';
+          field.required = true;
+        } else {
+          field.style.display = 'none';
+          field.required = false;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

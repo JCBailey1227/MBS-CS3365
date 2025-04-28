@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Movie Details</title>
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      display: flex;
+      padding: 40px;
+    }
+    .left {
+      flex: 1;
+      padding-right: 40px;
+    }
+    .left img {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 10px;
+    }
+    .rating {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #aaa;
+    }
+    .reviews {
+      margin-top: 30px;
+    }
+    .reviews textarea {
+      width: 100%;
+      height: 100px;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      resize: none;
+    }
+    .reviews button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #01b4e4;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .review-list {
+      margin-top: 20px;
+    }
+    .review-item {
+      background-color: #1a1a1a;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+    .right {
+      flex: 2;
+      padding-left: 40px;
+      border-left: 2px solid #2e2e2e;
+    }
+    .right select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      margin-top: 10px;
+    }
+    .timings {
+      margin-top: 30px;
+    }
+    .timing-date {
+      font-weight: bold;
+      margin-top: 20px;
+    }
+.timing-button {
+  background-color: #01b4e4;
+  border: none;
+  padding: 14px 28px; /* ⬅️ made the buttons bigger */
+  margin: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  font-size: 18px; /* ⬅️ larger text */
+  font-weight: bold;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left">
+      <img id="movie-poster" src="" alt="Movie Poster">
+      <div class="rating" id="movie-rating"></div>
+      <div class="reviews">
+        <h3>Leave a Review:</h3>
+        <textarea id="review-input" placeholder="Write your review..."></textarea><br>
+        <button onclick="submitReview()">Submit Review</button>
+        <div class="review-list" id="review-list"></div>
+      </div>
+    </div>
+    <div class="right">
+      <h2>Select Location:</h2>
+      <select id="location-select" onchange="showTimings()">
+        <option value="">--Choose Location--</option>
+        <option value="Snyder">Snyder</option>
+        <option value="Abilene">Abilene</option>
+        <option value="Amarillo">Amarillo</option>
+        <option value="Lubbock">Lubbock</option>
+        <option value="Plainview">Plainview</option>
+        <option value="Levelland">Levelland</option>
+      </select>
+
+      <div class="timings" id="timings"></div>
+    </div>
+  </div>
+
+  <script>
+    const movieData = JSON.parse(localStorage.getItem('selectedMovie'));
+
+    if (!movieData) {
+      window.location.href = 'moviess.html';
+    }
+
+    document.getElementById('movie-poster').src = movieData.poster;
+    document.getElementById('movie-rating').textContent = `Rating: ${movieData.rating}`;
+
+    async function fetchShowtimes() {
+      const res = await fetch('/get-showtimes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ movieName: movieData.title })
+      });
+      return await res.json();
+    }
+
+    async function showTimings() {
+      const location = document.getElementById('location-select').value;
+      const timingsDiv = document.getElementById('timings');
+      timingsDiv.innerHTML = '';
+
+      const shows = await fetchShowtimes();
+      const filteredShows = shows.filter(show => show.Location === location);
+
+      filteredShows.forEach(show => {
+        const times = show.Times.split(',').map(t => t.trim());
+        const date = show.Date;
+
+        const dateTitle = document.createElement('div');
+        dateTitle.className = 'timing-date';
+        dateTitle.textContent = date;
+        timingsDiv.appendChild(dateTitle);
+
+times.forEach(time => {
+  const btn = document.createElement('button');
+  btn.className = 'timing-button';
+  btn.textContent = time;
+  btn.onclick = () => selectTime(show["Movie Name"], location, date, time);  // ✅ correct
+  timingsDiv.appendChild(btn);
+});
+
+
+      });
+    }
+
+    function selectTime(movieName, location, date, time) {
+      localStorage.setItem('bookingInfo', JSON.stringify({ movieName, location, date, time }));
+      window.location.href = 'seats.html';
+    }
+
+    function submitReview() {
+      const review = document.getElementById('review-input').value.trim();
+      if (review === '') return;
+
+      let reviews = JSON.parse(localStorage.getItem('reviews_' + movieData.title)) || [];
+      reviews.push('Anonymous User: ' + review);
+      localStorage.setItem('reviews_' + movieData.title, JSON.stringify(reviews));
+      document.getElementById('review-input').value = '';
+      renderReviews();
+    }
+
+    function renderReviews() {
+      const reviewList = document.getElementById('review-list');
+      reviewList.innerHTML = '';
+      const reviews = JSON.parse(localStorage.getItem('reviews_' + movieData.title)) || [];
+      reviews.forEach(r => {
+        const div = document.createElement('div');
+        div.className = 'review-item';
+        div.textContent = r;
+        reviewList.appendChild(div);
+      });
+    }
+
+    renderReviews();
+  </script>
+</body>
+</html>

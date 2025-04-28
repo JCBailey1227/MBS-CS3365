@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forgot Password</title>
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .forgot-container {
+      background: #1e1e1e;
+      padding: 3em;
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
+      max-width: 400px;
+      width: 100%;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #01b4e4;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      color: white;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #0194bb;
+    }
+  </style>
+</head>
+<body>
+  <div class="forgot-container">
+    <h2>Forgot Password</h2>
+    <form id="forgot-form">
+      <input type="email" id="email" placeholder="Enter your Email" required />
+      <input type="password" id="new-password" placeholder="Enter new Password" required />
+      <button type="submit">Reset Password</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("forgot-form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const data = {
+        email: document.getElementById("email").value,
+        newPassword: document.getElementById("new-password").value
+      };
+
+      const res = await fetch("/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const msg = await res.json();
+      alert(msg.message);
+
+      if (res.ok) {
+        window.location.href = "index.html"; // go back to login
+      }
+    });
+  </script>
+</body>
+</html>

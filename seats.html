@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Seat Booking</title>
+  <link rel="stylesheet" href="seat.css">
+</head>
+<body>
+  <div class="fade-in">
+
+    <button class="backbutton">
+      <a class="link" href="moviess.html">Back</a>
+    </button>
+
+    <h1 id="movie-title" class="movie-title">Movie Title</h1>
+
+    <div class="special-accommodation">
+      <label for="accommodation-select">Need Special Accommodation?</label>
+      <select id="accommodation-select">
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+      </select>
+    </div>
+
+    <ul class="showcase">
+      <li><div class="seat"></div><small>Available (White)</small></li>
+      <li><div class="seat occupied"></div><small>Occupied (Black)</small></li>
+    </ul>
+
+    <div class="container">
+      <div class="screen"></div>
+
+      <div class="row">
+        <div class="seat"></div><div class="seat"></div><div class="seat"></div><div class="seat"></div>
+        <div class="seat"></div><div class="seat"></div><div class="seat"></div><div class="seat"></div>
+      </div>
+      <div class="row">
+        <div class="seat"></div><div class="seat occupied"></div><div class="seat"></div><div class="seat"></div>
+        <div class="seat occupied"></div><div class="seat"></div><div class="seat"></div><div class="seat"></div>
+      </div>
+    </div>
+
+    <p class="text">
+      You have selected <span id="count">0</span> seats for a price of $<span id="total">0</span>
+    </p>
+
+    <button type="button" id="booknow-button" class="booknow">Proceed to Payment</button>
+
+    <script src="seat.js"></script>
+  </div>
+</body>
+</html>
