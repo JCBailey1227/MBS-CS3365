@@ -1,0 +1,110 @@
+body {
+  background-color: #0f0f0f;
+  color: white;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.fade-in {
+  animation: fadeIn 1s ease-in;
+  padding: 20px;
+}
+
+.movie-container, .special-accommodation {
+  margin: 20px 0;
+  font-size: 18px;
+}
+
+.container {
+  perspective: 1000px;
+  margin-bottom: 30px;
+}
+
+.screen {
+  background-color: #01b4e4;
+  height: 50px;
+  width: 70%;
+  margin: 20px auto;
+  border-radius: 15px;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0;
+}
+
+.seat {
+  background-color: white;
+  height: 35px;
+  width: 35px;
+  margin: 4px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  cursor: pointer;
+}
+
+.seat.selected {
+  background-color: #6feaf6;
+}
+
+.seat.occupied {
+  background-color: black;
+  cursor: not-allowed;
+}
+
+.showcase {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.showcase li {
+  display: flex;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.showcase li small {
+  margin-left: 8px;
+}
+
+.text {
+  text-align: center;
+  font-size: 18px;
+}
+
+button.booknow {
+  display: block;
+  width: 50%;
+  margin: 20px auto;
+  padding: 12px;
+  font-size: 20px;
+  border: none;
+  background-color: #01b4e4;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+button.booknow:hover {
+  background-color: #0194bb;
+}
+
+.backbutton {
+  margin: 10px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+a.link {
+  color: white;
+  text-decoration: none;
+}
+.movie-title {
+  text-align: center;
+  font-size: 30px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}

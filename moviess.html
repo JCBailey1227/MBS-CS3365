@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Movie Booking System</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0f0f0f;
+      color: #ffffff;
+    }
+    header {
+      background: #1a1a1a;
+      padding: 1em 2em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #2e2e2e;
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #01b4e4;
+    }
+    .auth-buttons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .auth-buttons span {
+      font-size: 14px;
+      color: white;
+    }
+    .auth-buttons button {
+      background: #01b4e4;
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .hero {
+      text-align: center;
+      padding: 5px 5px;
+      background-color: #121212;
+    }
+    .hero h1 {
+      font-size: 30px;
+    }
+    .movie-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+      padding: 40px;
+    }
+    .movie-card {
+      background: #1e1e1e;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .movie-poster {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+    }
+    .movie-info {
+      padding: 15px;
+    }
+    .movie-title {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .movie-meta {
+      color: #aaa;
+      font-size: 14px;
+    }
+    .book-now-btn {
+      margin-top: 15px;
+      background-color: #01b4e4;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 5px;
+      font-size: 16px;
+      color: white;
+      cursor: pointer;
+    }
+    .upcoming-label {
+      background: #e74c3c;
+      color: white;
+      font-size: 12px;
+      padding: 5px;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      border-radius: 4px;
+    }
+    .section-title {
+      margin-left: 40px;
+      font-size: 26px;
+      border-left: 4px solid #01b4e4;
+      padding-left: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">🎬 MovieBooking</div>
+    <div class="auth-buttons" id="auth-buttons"></div>
+  </header>
+
+  <section class="hero">
+    <h1>Book Your Tickets Online</h1>
+    <p>Skip the line and enjoy your favorite movies at any of our six locations</p>
+  </section>
+
+  <h2 class="section-title">Currently Playing</h2>
+  <div class="movie-grid">
+    <div class="movie-card">
+      <img src="dune.jpeg" alt="Dune" class="movie-poster" />
+      <div class="movie-info">
+        <h3 class="movie-title">Dune: Part Two</h3>
+        <p class="movie-meta">Sci-Fi | 2h 46m</p>
+        <button class="book-now-btn" onclick="selectMovie('dune.jpeg', 'Dune: Part Two', '4.5/5')">Book Now</button>
+      </div>
+    </div>
+
+    <div class="movie-card">
+      <img src="batman.jpeg" alt="Batman" class="movie-poster" />
+      <div class="movie-info">
+        <h3 class="movie-title">The Batman</h3>
+        <p class="movie-meta">Action | 2h 56m</p>
+        <button class="book-now-btn" onclick="selectMovie('batman.jpeg', 'The Batman', '4.7/5')">Book Now</button>
+      </div>
+    </div>
+
+    <div class="movie-card">
+      <img src="minecraft.jpeg" alt="Minecraft" class="movie-poster" />
+      <div class="movie-info">
+        <h3 class="movie-title">Minecraft Movie</h3>
+        <p class="movie-meta">Adventure | 2h</p>
+        <button class="book-now-btn" onclick="selectMovie('minecraft.jpeg', 'Minecraft Movie', '4.2/5')">Book Now</button>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Coming Soon</h2>
+  <div class="movie-grid">
+    <div class="movie-card">
+      <img src="bride.jpeg" alt="Bride" class="movie-poster" />
+      <div class="movie-info">
+        <h3 class="movie-title">Bride of Frankenstein</h3>
+        <p class="movie-meta">Horror | Coming Soon</p>
+        <div class="upcoming-label">Upcoming</div>
+      </div>
+    </div>
+
+    <div class="movie-card">
+      <img src="harrypotter.jpeg" alt="Harry Potter" class="movie-poster" />
+      <div class="movie-info">
+        <h3 class="movie-title">Harry Potter & the Cursed Child</h3>
+        <p class="movie-meta">Fantasy | Coming Soon</p>
+        <div class="upcoming-label">Upcoming</div>
+      </div>
+    </div>
+
+    <div class="movie-card">
+      <img src="avengers.webp" alt="Secret Wars" class="movie-poster" />
+      <div class="movie-info">
+        <h3 class="movie-title">Avengers: Secret Wars</h3>
+        <p class="movie-meta">Action | Coming Soon</p>
+        <div class="upcoming-label">Upcoming</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const authDiv = document.getElementById('auth-buttons');
+    const loggedIn = localStorage.getItem('userLoggedIn') === 'true';
+    const email = localStorage.getItem('userEmail');
+
+    if (loggedIn && email) {
+      authDiv.innerHTML = `
+        <span>Welcome, <strong>${email}</strong></span>
+        <button onclick="goToProfile()">Profile</button>
+        <button onclick="logout()">Logout</button>
+      `;
+    } else {
+      authDiv.innerHTML = `
+        <button onclick="window.location.href='index.html'">Login</button>
+        <button onclick="window.location.href='register.html'">Register</button>
+      `;
+    }
+
+    function logout() {
+      localStorage.removeItem('userLoggedIn');
+      localStorage.removeItem('userEmail');
+      window.location.href = 'loggedout.html';
+    }
+
+    function goToProfile() {
+      window.location.href = 'profile.html'; // Go to profile page
+    }
+
+    function selectMovie(poster, title, rating) {
+      localStorage.setItem('selectedMovie', JSON.stringify({ poster, title, rating }));
+      window.location.href = 'movie.html';
+    }
+  </script>
+</body>
+</html>
