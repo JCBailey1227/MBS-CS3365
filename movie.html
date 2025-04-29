@@ -14,6 +14,7 @@
     .container {
       display: flex;
       padding: 40px;
+      flex-wrap: wrap;
     }
     .left {
       flex: 1;
@@ -40,6 +41,8 @@
       border-radius: 5px;
       border: none;
       resize: none;
+      background: #1e1e1e;
+      color: white;
     }
     .reviews button {
       margin-top: 10px;
@@ -72,6 +75,10 @@
       border: none;
       margin-top: 10px;
     }
+    .synopsis {
+      margin: 20px 0;
+      font-size: 16px;
+    }
     .timings {
       margin-top: 30px;
     }
@@ -79,18 +86,17 @@
       font-weight: bold;
       margin-top: 20px;
     }
-.timing-button {
-  background-color: #01b4e4;
-  border: none;
-  padding: 14px 28px; /* ⬅️ made the buttons bigger */
-  margin: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  color: white;
-  font-size: 18px; /* ⬅️ larger text */
-  font-weight: bold;
-}
-
+    .timing-button {
+      background-color: #01b4e4;
+      border: none;
+      padding: 14px 28px;
+      margin: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -98,6 +104,7 @@
     <div class="left">
       <img id="movie-poster" src="" alt="Movie Poster">
       <div class="rating" id="movie-rating"></div>
+      <div class="synopsis" id="movie-synopsis"></div>
       <div class="reviews">
         <h3>Leave a Review:</h3>
         <textarea id="review-input" placeholder="Write your review..."></textarea><br>
@@ -116,59 +123,53 @@
         <option value="Plainview">Plainview</option>
         <option value="Levelland">Levelland</option>
       </select>
-
       <div class="timings" id="timings"></div>
     </div>
   </div>
 
   <script>
     const movieData = JSON.parse(localStorage.getItem('selectedMovie'));
-
     if (!movieData) {
       window.location.href = 'moviess.html';
     }
 
     document.getElementById('movie-poster').src = movieData.poster;
-    document.getElementById('movie-rating').textContent = `Rating: ${movieData.rating}`;
+    document.getElementById('movie-rating').textContent = `Rating: ⭐ ${movieData.rating}`;
+    document.getElementById('movie-synopsis').textContent = movieData.synopsis;
 
-    async function fetchShowtimes() {
-      const res = await fetch('/get-showtimes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ movieName: movieData.title })
-      });
-      return await res.json();
-    }
+async function fetchShowtimes() {
+  const res = await fetch('/get-all-showtimes');
+  return await res.json();
+}
 
     async function showTimings() {
-      const location = document.getElementById('location-select').value;
-      const timingsDiv = document.getElementById('timings');
-      timingsDiv.innerHTML = '';
+  const location = document.getElementById('location-select').value;
+  const timingsDiv = document.getElementById('timings');
+  timingsDiv.innerHTML = '';
 
-      const shows = await fetchShowtimes();
-      const filteredShows = shows.filter(show => show.Location === location);
+  const shows = await fetchShowtimes();
+  const filteredShows = shows.filter(show => 
+    show.Location === location && show["Movie Name"] === movieData.title
+  );
 
-      filteredShows.forEach(show => {
-        const times = show.Times.split(',').map(t => t.trim());
-        const date = show.Date;
+  filteredShows.forEach(show => {
+    const times = show.Times.split(',').map(t => t.trim());
+    const date = show.Date;
 
-        const dateTitle = document.createElement('div');
-        dateTitle.className = 'timing-date';
-        dateTitle.textContent = date;
-        timingsDiv.appendChild(dateTitle);
+    const dateTitle = document.createElement('div');
+    dateTitle.className = 'timing-date';
+    dateTitle.textContent = date;
+    timingsDiv.appendChild(dateTitle);
 
-times.forEach(time => {
-  const btn = document.createElement('button');
-  btn.className = 'timing-button';
-  btn.textContent = time;
-  btn.onclick = () => selectTime(show["Movie Name"], location, date, time);  // ✅ correct
-  timingsDiv.appendChild(btn);
-});
-
-
-      });
-    }
-
+    times.forEach(time => {
+      const btn = document.createElement('button');
+      btn.className = 'timing-button';
+      btn.textContent = time;
+      btn.onclick = () => selectTime(show["Movie Name"], location, date, time);
+      timingsDiv.appendChild(btn);
+    });
+  });
+}
     function selectTime(movieName, location, date, time) {
       localStorage.setItem('bookingInfo', JSON.stringify({ movieName, location, date, time }));
       window.location.href = 'seats.html';

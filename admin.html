@@ -2,219 +2,569 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin Dashboard</title>
-  <style>
+<style>
     :root {
       --primary: #01b4e4;
+      --primary-light: #33c5eb;
       --primary-dark: #0194bb;
+      --primary-bg: rgba(1, 180, 228, 0.1);
       --danger: #e74c3c;
+      --danger-light: #f06559;
       --danger-dark: #c0392b;
-      --bg-dark: #0f0f0f;
-      --bg-panel: #1e1e1e;
-      --border: #2e2e2e;
+      --danger-bg: rgba(231, 76, 60, 0.1);
+      --success: #2ecc71;
+      --success-dark: #27ae60;
+      --bg-dark: #121418;
+      --bg-panel: #1a1d23;
+      --bg-input: #242830;
+      --border: #2e3340;
       --text: #ffffff;
+      --text-muted: #a0a6b0;
     }
     
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
     }
     
     body {
       background-color: var(--bg-dark);
       color: var(--text);
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      padding: 1.25rem;
-      margin: 0;
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      padding: 0;
       font-size: 0.95rem;
       line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Layout */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
     }
     
     header {
+      background-color: var(--bg-panel);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .header-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--border);
     }
     
+    main {
+      flex: 1;
+      padding: 2rem 0;
+    }
+    
+    /* Logo */
     .logo {
       font-size: 1.4rem;
-      font-weight: bold;
+      font-weight: 700;
       color: var(--primary);
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
     
-    .logout-btn {
-      background-color: var(--danger);
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 0.25rem;
-      font-size: 0.85rem;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.2s;
-      width: auto;
+    .logo i {
+      font-size: 1.2rem;
     }
     
-    .logout-btn:hover {
+    /* Buttons */
+    .btn {
+      border: none;
+      padding: 0.6rem 1.25rem;
+      border-radius: 0.375rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .btn-danger {
+      background-color: var(--danger);
+      color: white;
+    }
+    
+    .btn-danger:hover {
       background-color: var(--danger-dark);
     }
     
-    h1, h2 {
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-      color: var(--text);
-      font-weight: 600;
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
     }
     
-    .form-section, .bookings-section {
-      background-color: var(--bg-panel);
-      padding: 1.25rem;
-      margin-bottom: 1.25rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    .btn-outline:hover {
+      background-color: var(--primary-bg);
     }
     
-    input, select, button {
-      width: 100%;
-      padding: 0.6rem 0.75rem;
-      margin: 0.5rem 0;
-      border: 1px solid var(--border);
-      border-radius: 0.25rem;
-      font-size: 0.9rem;
-      background-color: #272727;
-      color: var(--text);
-    }
-    
-    input:focus, select:focus {
-      outline: 2px solid var(--primary);
-      border-color: transparent;
-    }
-    
-    button:not(.logout-btn) {
-      background-color: var(--primary);
-      color: white;
-      cursor: pointer;
-      border: none;
+    .logout-btn {
+      background-color: transparent;
+      border: 1px solid var(--danger);
+      color: var(--danger);
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      font-size: 0.85rem;
       font-weight: 500;
-      transition: background-color 0.2s;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
     
-    button:not(.logout-btn):hover {
-      background-color: var(--primary-dark);
+    .logout-btn:hover {
+      background-color: var(--danger-bg);
+    }
+    
+    /* Cards */
+    .card {
+      background-color: var(--bg-panel);
+      border-radius: 0.75rem;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      margin-bottom: 2rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+    
+    .card-header {
+      padding: 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .card-title i {
+      color: var(--primary);
+    }
+    
+    .card-body {
+      padding: 1.5rem;
+    }
+    
+    /* Forms */
+    .form-grid {
+      display: grid;
+      gap: 1rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      font-size: 0.95rem;
+      background-color: var(--bg-input);
+      color: var(--text);
+      transition: all 0.2s ease;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(1, 180, 228, 0.25);
+    }
+    
+    .form-control::placeholder {
+      color: var(--text-muted);
+      opacity: 0.7;
+    }
+    
+    .file-input-wrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .file-input-label {
+      background-color: var(--bg-input);
+      border: 1px dashed var(--border);
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .file-input-label:hover {
+      border-color: var(--primary);
+      background-color: rgba(1, 180, 228, 0.05);
+    }
+    
+    .file-input-icon {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    input[type="file"] {
+      position: absolute;
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      z-index: -1;
+    }
+    
+    /* Tables */
+    .table-container {
+      overflow-x: auto;
+      margin-top: 1.5rem;
     }
     
     table {
       width: 100%;
-      border-collapse: collapse;
+      border-collapse: separate;
+      border-spacing: 0;
       margin-top: 1rem;
-      font-size: 0.85rem;
-    }
-    
-    table, th, td {
-      border: 1px solid var(--border);
+      font-size: 0.9rem;
     }
     
     th, td {
-      padding: 0.6rem;
+      padding: 1rem;
       text-align: left;
     }
     
     th {
-      background-color: #272727;
+      background-color: var(--bg-input);
       font-weight: 600;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
     
-    .danger {
-      background-color: var(--danger);
+    tr {
+      border-bottom: 1px solid var(--border);
     }
     
-    .danger:hover {
-      background-color: var(--danger-dark);
+    tbody tr {
+      transition: background-color 0.2s ease;
     }
     
-    form {
-      display: grid;
-      gap: 0.5rem;
+    tbody tr:hover {
+      background-color: rgba(1, 180, 228, 0.05);
     }
     
+    /* Table first column */
+    table th:first-child,
+    table td:first-child {
+      border-top-left-radius: 0.5rem;
+      border-bottom-left-radius: 0.5rem;
+    }
+    
+    /* Table last column */
+    table th:last-child,
+    table td:last-child {
+      border-top-right-radius: 0.5rem;
+      border-bottom-right-radius: 0.5rem;
+    }
+    
+    /* Status badges */
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 2rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    
+    .badge-success {
+      background-color: rgba(46, 204, 113, 0.15);
+      color: var(--success);
+    }
+    
+    .badge-pending {
+      background-color: rgba(243, 156, 18, 0.15);
+      color: #f39c12;
+    }
+    
+    /* Action buttons */
+    .action-btn {
+      background-color: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0.4rem;
+      border-radius: 0.25rem;
+      transition: all 0.2s ease;
+    }
+    
+    .action-btn:hover {
+      color: var(--primary);
+      background-color: var(--primary-bg);
+    }
+    
+    .action-btn.delete:hover {
+      color: var(--danger);
+      background-color: var(--danger-bg);
+    }
+    
+    /* Responsive */
     @media (min-width: 768px) {
-      form {
+      .form-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 0.75rem;
+        gap: 1.5rem;
       }
       
-      form button {
+      .form-grid .full-width {
         grid-column: span 2;
+      }
+      
+      .btn-row {
+        grid-column: span 2;
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 0.5rem;
       }
     }
   </style>
 </head>
+
 <body>
 
-  <header>
-    <div class="logo">🎬 Admin Dashboard</div>
-    <button class="logout-btn" onclick="logout()">Logout</button>
-  </header>
+<header>
+  <div class="container header-content">
+    <div class="logo">
+      <i class="fas fa-film"></i>
+      Admin Dashboard
+    </div>
+    <button class="logout-btn" onclick="logout()">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+  </div>
+</header>
 
-  <div class="form-section">
-    <h2>Add New Movie Timing</h2>
-    <form id="add-showtime-form">
-      <input type="text" id="movie-name" placeholder="Movie Name" required />
-      <input type="text" id="location" placeholder="Location" required />
-      <input type="text" id="date" placeholder="Date (e.g., May 5)" required />
-      <input type="text" id="time" placeholder="Time (e.g., 5:00 PM)" required />
-      <input type="number" id="price" placeholder="Ticket Price" required />
-      <button type="submit">Add Showtime</button>
-    </form>
+<main class="container">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title"><i class="fas fa-plus-circle"></i> Add New Movie</h2>
+    </div>
+    <div class="card-body">
+      <form id="add-movie-form" enctype="multipart/form-data" class="form-grid">
+        <div class="form-group">
+          <label for="movie-name" class="form-label">Movie Name</label>
+          <input type="text" id="movie-name" class="form-control" placeholder="Enter movie title" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="rating" class="form-label">Rating</label>
+          <input type="text" id="rating" class="form-control" placeholder="e.g., 4.5" required />
+        </div>
+        
+        <div class="form-group full-width">
+          <label for="synopsis" class="form-label">Synopsis</label>
+          <textarea id="synopsis" class="form-control" placeholder="Enter movie description" rows="3" required></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="status" class="form-label">Status</label>
+          <select id="status" class="form-control" required>
+            <option value="">Select Status</option>
+            <option value="Now Showing">Now Showing</option>
+            <option value="Upcoming">Upcoming</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="poster" class="form-label">Movie Poster</label>
+          <div class="file-input-wrapper">
+            <input type="file" id="poster" accept=".jpg,.jpeg" required />
+            <label for="poster" class="file-input-label">
+              <i class="fas fa-cloud-upload-alt file-input-icon"></i>
+              <span>Choose a poster image</span>
+              <small style="display: block; margin-top: 0.5rem; color: var(--text-muted);">JPG/JPEG only</small>
+            </label>
+          </div>
+        </div>
+        
+        <div class="btn-row">
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add Movie
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 
-  <div class="form-section">
-    <h2>Remove Existing Timing</h2>
-    <form id="remove-showtime-form">
-      <input type="text" id="remove-movie-name" placeholder="Movie Name" required />
-      <input type="text" id="remove-location" placeholder="Location" required />
-      <input type="text" id="remove-date" placeholder="Date" required />
-      <input type="text" id="remove-time" placeholder="Time" required />
-      <button type="submit" class="danger">Remove Showtime</button>
-    </form>
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title"><i class="fas fa-clock"></i> Add New Movie Timing</h2>
+    </div>
+    <div class="card-body">
+      <form id="add-showtime-form" class="form-grid">
+        <div class="form-group">
+          <label for="show-movie-name" class="form-label">Movie Name</label>
+          <input type="text" id="show-movie-name" class="form-control" placeholder="Enter movie title" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="location" class="form-label">Location</label>
+          <input type="text" id="location" class="form-control" placeholder="Cinema location" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="date" class="form-label">Date</label>
+          <input type="text" id="date" class="form-control" placeholder="e.g., May 5" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="time" class="form-label">Time</label>
+          <input type="text" id="time" class="form-control" placeholder="e.g., 5:00 PM" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="price" class="form-label">Ticket Price</label>
+          <input type="number" id="price" class="form-control" placeholder="Enter price" required />
+        </div>
+        
+        <div class="btn-row">
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add Showtime
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 
-  <div class="bookings-section">
-  <h2>All Bookings</h2>
-  <button onclick="fetchBookings()">View All Bookings</button>
-  <table id="bookings-table" style="display:none;">
-    <thead>
-      <tr>
-        <th>User Email</th>
-        <th>Movie</th>
-        <th>Location</th>
-        <th>Date</th>
-        <th>Time</th>
-        <th>Seats</th>
-        <th>Accommodation</th>
-        <th>Confirmation #</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody id="bookings-body"></tbody>
-  </table>
-</div>
-  <script src="admin.js"></script>
-  <script>
-    function logout() {
-      localStorage.removeItem('userLoggedIn');
-      localStorage.removeItem('userEmail');
-      window.location.href = "loggedout.html";
-    }
-  </script>
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title"><i class="fas fa-trash-alt"></i> Remove Existing Timing</h2>
+    </div>
+    <div class="card-body">
+      <form id="remove-showtime-form" class="form-grid">
+        <div class="form-group">
+          <label for="remove-movie-name" class="form-label">Movie Name</label>
+          <input type="text" id="remove-movie-name" class="form-control" placeholder="Enter movie title" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="remove-location" class="form-label">Location</label>
+          <input type="text" id="remove-location" class="form-control" placeholder="Cinema location" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="remove-date" class="form-label">Date</label>
+          <input type="text" id="remove-date" class="form-control" placeholder="e.g., May 5" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="remove-time" class="form-label">Time</label>
+          <input type="text" id="remove-time" class="form-control" placeholder="e.g., 5:00 PM" required />
+        </div>
+        
+        <div class="btn-row">
+          <button type="submit" class="btn btn-danger">
+            <i class="fas fa-trash"></i> Remove Showtime
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title"><i class="fas fa-ticket-alt"></i> All Bookings</h2>
+    </div>
+    <div class="card-body">
+      <button onclick="fetchBookings()" class="btn btn-outline">
+        <i class="fas fa-refresh"></i> View All Bookings
+      </button>
+      
+      <div class="table-container">
+        <table id="bookings-table" style="display:none;">
+          <thead>
+            <tr>
+              <th>User Email</th>
+              <th>Movie</th>
+              <th>Location</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Seats</th>
+              <th>Accommodation</th>
+              <th>Confirmation #</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="bookings-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="admin.js"></script>
+<script>
+function logout() {
+  localStorage.removeItem('userLoggedIn');
+  localStorage.removeItem('userEmail');
+  window.location.href = "loggedout.html";
+}
+
+
+<script src="admin.js"></script>
+<script>
+function logout() {
+  localStorage.removeItem('userLoggedIn');
+  localStorage.removeItem('userEmail');
+  window.location.href = "loggedout.html";
+}
+</script>
 
 </body>
 </html>

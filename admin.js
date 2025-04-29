@@ -1,8 +1,32 @@
-// Handle Add Showtime
+// ✅ Handle Add Movie (with poster upload)
+document.getElementById('add-movie-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData();
+  formData.append('poster', document.getElementById('poster').files[0]);
+  formData.append('movieName', document.getElementById('movie-name').value.trim());
+  formData.append('rating', document.getElementById('rating').value.trim());
+  formData.append('synopsis', document.getElementById('synopsis').value.trim());
+  formData.append('status', document.getElementById('status').value.trim());
+
+  const res = await fetch('/add-movie', {
+    method: 'POST',
+    body: formData
+  });
+
+  const msg = await res.json();
+  alert(msg.message);
+
+  if (res.ok) {
+    document.getElementById('add-movie-form').reset();
+  }
+});
+
+// ✅ Handle Add Showtime
 document.getElementById('add-showtime-form').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const movieName = document.getElementById('movie-name').value.trim();
+  const movieName = document.getElementById('show-movie-name').value.trim();
   const location = document.getElementById('location').value.trim();
   const date = document.getElementById('date').value.trim();
   const time = document.getElementById('time').value.trim();
@@ -22,7 +46,7 @@ document.getElementById('add-showtime-form').addEventListener('submit', async (e
   }
 });
 
-// Handle Remove Showtime
+// ✅ Handle Remove Showtime
 document.getElementById('remove-showtime-form').addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -45,13 +69,9 @@ document.getElementById('remove-showtime-form').addEventListener('submit', async
   }
 });
 
-// Fetch All Bookings
-// Fetch All Bookings
+// ✅ Fetch and show all bookings
 async function fetchBookings() {
-  const res = await fetch('/admin-get-bookings', {
-    method: 'GET',
-  });
-
+  const res = await fetch('/admin-get-bookings', { method: 'GET' });
   const bookings = await res.json();
 
   const table = document.getElementById('bookings-table');
@@ -80,7 +100,7 @@ async function fetchBookings() {
   table.style.display = 'table';
 }
 
-// Deactivate Booking
+// ✅ Deactivate a booking
 async function deactivateBooking(confirmationNumber) {
   if (!confirmationNumber) return alert("Invalid booking.");
 
@@ -94,7 +114,6 @@ async function deactivateBooking(confirmationNumber) {
   alert(msg.message);
 
   if (res.ok) {
-    fetchBookings(); // Refresh after deactivation
+    fetchBookings();
   }
 }
-

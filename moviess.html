@@ -50,6 +50,12 @@
     .hero h1 {
       font-size: 30px;
     }
+    .section-title {
+      margin-left: 40px;
+      font-size: 26px;
+      border-left: 4px solid #01b4e4;
+      padding-left: 10px;
+    }
     .movie-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -102,12 +108,6 @@
       right: 10px;
       border-radius: 4px;
     }
-    .section-title {
-      margin-left: 40px;
-      font-size: 26px;
-      border-left: 4px solid #01b4e4;
-      padding-left: 10px;
-    }
   </style>
 </head>
 
@@ -123,66 +123,14 @@
   </section>
 
   <h2 class="section-title">Currently Playing</h2>
-  <div class="movie-grid">
-    <div class="movie-card">
-      <img src="dune.jpeg" alt="Dune" class="movie-poster" />
-      <div class="movie-info">
-        <h3 class="movie-title">Dune: Part Two</h3>
-        <p class="movie-meta">Sci-Fi | 2h 46m</p>
-        <button class="book-now-btn" onclick="selectMovie('dune.jpeg', 'Dune: Part Two', '4.5/5')">Book Now</button>
-      </div>
-    </div>
-
-    <div class="movie-card">
-      <img src="batman.jpeg" alt="Batman" class="movie-poster" />
-      <div class="movie-info">
-        <h3 class="movie-title">The Batman</h3>
-        <p class="movie-meta">Action | 2h 56m</p>
-        <button class="book-now-btn" onclick="selectMovie('batman.jpeg', 'The Batman', '4.7/5')">Book Now</button>
-      </div>
-    </div>
-
-    <div class="movie-card">
-      <img src="minecraft.jpeg" alt="Minecraft" class="movie-poster" />
-      <div class="movie-info">
-        <h3 class="movie-title">Minecraft Movie</h3>
-        <p class="movie-meta">Adventure | 2h</p>
-        <button class="book-now-btn" onclick="selectMovie('minecraft.jpeg', 'Minecraft Movie', '4.2/5')">Book Now</button>
-      </div>
-    </div>
-  </div>
+  <div class="movie-grid" id="now-showing-grid"></div>
 
   <h2 class="section-title">Coming Soon</h2>
-  <div class="movie-grid">
-    <div class="movie-card">
-      <img src="bride.jpeg" alt="Bride" class="movie-poster" />
-      <div class="movie-info">
-        <h3 class="movie-title">Bride of Frankenstein</h3>
-        <p class="movie-meta">Horror | Coming Soon</p>
-        <div class="upcoming-label">Upcoming</div>
-      </div>
-    </div>
-
-    <div class="movie-card">
-      <img src="harrypotter.jpeg" alt="Harry Potter" class="movie-poster" />
-      <div class="movie-info">
-        <h3 class="movie-title">Harry Potter & the Cursed Child</h3>
-        <p class="movie-meta">Fantasy | Coming Soon</p>
-        <div class="upcoming-label">Upcoming</div>
-      </div>
-    </div>
-
-    <div class="movie-card">
-      <img src="avengers.webp" alt="Secret Wars" class="movie-poster" />
-      <div class="movie-info">
-        <h3 class="movie-title">Avengers: Secret Wars</h3>
-        <p class="movie-meta">Action | Coming Soon</p>
-        <div class="upcoming-label">Upcoming</div>
-      </div>
-    </div>
-  </div>
+  <div class="movie-grid" id="upcoming-grid"></div>
 
   <script>
+localStorage.removeItem('selectedMovie');
+
     const authDiv = document.getElementById('auth-buttons');
     const loggedIn = localStorage.getItem('userLoggedIn') === 'true';
     const email = localStorage.getItem('userEmail');
@@ -207,13 +155,53 @@
     }
 
     function goToProfile() {
-      window.location.href = 'profile.html'; // Go to profile page
+      window.location.href = 'profile.html';
     }
 
-    function selectMovie(poster, title, rating) {
-      localStorage.setItem('selectedMovie', JSON.stringify({ poster, title, rating }));
+    function selectMovie(movie) {
+      localStorage.setItem('selectedMovie', JSON.stringify({
+        title: movie["Movie Name"],
+        poster: movie.Poster,
+        rating: movie.Rating,
+        synopsis: movie.Synopsis,
+        status: movie.Status
+      }));
       window.location.href = 'movie.html';
     }
+
+    async function loadMovies() {
+      const res = await fetch('/get-all-movies');
+      const movies = await res.json();
+
+      const nowShowingGrid = document.getElementById('now-showing-grid');
+      const upcomingGrid = document.getElementById('upcoming-grid');
+
+      movies.forEach(movie => {
+        const card = document.createElement('div');
+        card.className = 'movie-card';
+        card.innerHTML = `
+          <img src="${movie.Poster}" alt="${movie["Movie Name"]}" class="movie-poster" />
+          <div class="movie-info">
+            <h3 class="movie-title">${movie["Movie Name"]}</h3>
+            <p class="movie-meta">⭐ ${movie.Rating}</p>
+            ${movie.Status === 'Now Showing' ? `<button class="book-now-btn">Book Now</button>` : ''}
+          </div>
+        `;
+        if (movie.Status === 'Upcoming') {
+          const label = document.createElement('div');
+          label.className = 'upcoming-label';
+          label.textContent = 'Upcoming';
+          card.appendChild(label);
+        }
+        card.querySelector('.book-now-btn')?.addEventListener('click', () => selectMovie(movie));
+
+        movie.Status === 'Now Showing'
+          ? nowShowingGrid.appendChild(card)
+          : upcomingGrid.appendChild(card);
+      });
+    }
+
+    loadMovies();
   </script>
 </body>
 </html>
