@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+  
+<!-- Style body for forgot password page -->
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Forgot Password</title>
   <style>
+    /* Styling background for forgot page */
     body {
       background-color: #0f0f0f;
       color: #fff;
@@ -15,6 +18,8 @@
       height: 100vh;
       margin: 0;
     }
+
+    /* Styling the box for forgot password */
     .forgot-container {
       background: #1e1e1e;
       padding: 3em;
@@ -23,6 +28,8 @@
       max-width: 400px;
       width: 100%;
     }
+
+    /* Styling the text boxes for email and password */
     input {
       width: 100%;
       padding: 12px;
@@ -31,6 +38,8 @@
       border-radius: 5px;
       font-size: 16px;
     }
+
+    /* Styling the button for reset password */
     button {
       width: 100%;
       padding: 12px;
@@ -47,6 +56,8 @@
     }
   </style>
 </head>
+
+<!-- Body for forgot password page to designate what text exist -->
 <body>
   <div class="forgot-container">
     <h2>Forgot Password</h2>
@@ -57,15 +68,18 @@
     </form>
   </div>
 
+  <!-- Script body to say what happens when button is pressed -->
   <script>
     document.getElementById("forgot-form").addEventListener("submit", async function(e) {
       e.preventDefault();
 
+      /* Collects the data inputted by user */
       const data = {
         email: document.getElementById("email").value,
         newPassword: document.getElementById("new-password").value
       };
-
+      
+      /* Sends the data using POST to server to update password and username */
       const res = await fetch("/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -75,8 +89,9 @@
       const msg = await res.json();
       alert(msg.message);
 
+      /* Goes back to login page after message recieved from server */
       if (res.ok) {
-        window.location.href = "index.html"; // go back to login
+        window.location.href = "index.html";
       }
     });
   </script>

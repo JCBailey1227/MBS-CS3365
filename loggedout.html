@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<!-- Style body for logged out page -->
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Logged Out</title>
   <style>
+    /* Styling the entire background of logged out page */
     body {
       background-color: #0f0f0f;
       color: white;
@@ -16,15 +19,21 @@
       margin: 0;
       text-align: center;
     }
+
+    /* Styling the background for message box */
     .message-box {
       background: #1e1e1e;
       padding: 2em 3em;
       border-radius: 12px;
       box-shadow: 0 0 30px rgba(0,0,0,0.5);
     }
+
+    /* Styling the header for message box */
     .message-box h1 {
       margin-bottom: 0.5em;
     }
+
+    /* Styling the button for return to login page */
     .message-box button {
       margin-top: 1em;
       padding: 10px 20px;
@@ -40,6 +49,8 @@
     }
   </style>
 </head>
+
+<!-- Body for logged out page, designates what text exist and what button does when pressed -->
 <body>
   <div class="message-box">
     <h1>You have been logged out successfully</h1>
