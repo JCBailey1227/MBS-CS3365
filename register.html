@@ -7,6 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Register - Movie Booking System</title>
   <style>
+    /* Styling for the border box and removes margin/padding */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
     /* Styling the background for register page */
     body {
       background-color: #0f0f0f;
@@ -55,23 +62,48 @@
       font-size: 16px;
       color: white;
       cursor: pointer;
+      transition: all 0.2s ease;
       margin-top: 10px;
     }
+    
+    /* Styling the button when hovered */
     button:hover {
       background-color: #0194bb;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
     /* Styling for link to return to login page */
     .link {
       text-align: center;
-      margin-top: 1em;
+      margin-top: 1.5rem;
     }
     .link a {
       color: #01b4e4;
+      margin-top: 0.4rem;
+      transition: all 0.2s ease;
       text-decoration: none;
+      position: relative;
     }
     .link a:hover {
-      text-decoration: underline;
+      color: #33c5ed;
+    }
+
+    /* Styling the lines underneath the links */
+    .link a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 1px;
+      bottom: -2px;
+      left: 0;
+      background-color: #33c5ed;
+      transition: width 0.3s ease;
+    }
+    
+    /* Styling the lines underneath the links when hovered */
+    .link a:hover::after {
+      width: 100%;
     }
   </style>
 </head>
