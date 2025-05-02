@@ -9,15 +9,21 @@ const multer = require("multer");
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+
+// ✅ Serve moviess.html as homepage BEFORE static middleware
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'moviess.html'));
+});
+
 app.use(express.static(__dirname)); // serve static files
 app.use('/posters', express.static(path.join(__dirname, 'posters'))); // serve poster images
 
 const EXCEL_FILE = "users.xlsx";
 const MOVIESHOWS_FILE = path.join(__dirname, "movieshowtimes.xlsx");
 const BOOKINGS_FILE = path.join(__dirname, "bookings.xlsx");
-const MOVIES_FILE = path.join(__dirname, "movies.xlsx"); // New for movies
+const MOVIES_FILE = path.join(__dirname, "movies.xlsx");
 
-// create necessary Excel files if they don't exist
+// Create Excel files if not exist
 function createExcelIfNotExist(filename, sheetname) {
     if (!fs.existsSync(filename)) {
         const wb = XLSX.utils.book_new();
@@ -46,7 +52,6 @@ function writeUser(user) {
     XLSX.writeFile(wb, EXCEL_FILE);
 }
 
-// Storage setup for poster upload
 const upload = multer({
     dest: 'posters/',
     fileFilter: (req, file, cb) => {
@@ -59,7 +64,7 @@ const upload = multer({
     }
 });
 
-// Authentication APIs (register/login)
+// Register & Login
 app.post("/register", (req, res) => {
     const { name, email, phone, address, password } = req.body;
     const users = readUsers();
@@ -81,7 +86,6 @@ app.post("/login", (req, res) => {
     }
 });
 
-// Get Profile, Forgot Password, Update Profile
 app.post("/get-profile", (req, res) => {
     const { email } = req.body;
     const users = readUsers();
@@ -120,7 +124,7 @@ app.post("/update-profile", (req, res) => {
     res.json({ message: "Profile updated successfully" });
 });
 
-// Movie Showtime APIs
+// Add/Remove Showtimes
 app.post("/add-showtime", (req, res) => {
     const { movieName, location, date, time, price } = req.body;
     const workbook = XLSX.readFile(MOVIESHOWS_FILE);
@@ -142,17 +146,12 @@ app.post("/remove-showtime", (req, res) => {
     const sheet = workbook.Sheets["Showtimes"];
     let shows = XLSX.utils.sheet_to_json(sheet);
 
-    const originalLength = shows.length;
     shows = shows.filter(show =>
         !(show["Movie Name"].toLowerCase().trim() === movieName.toLowerCase().trim() &&
           show.Location.toLowerCase().trim() === location.toLowerCase().trim() &&
           show.Date.toLowerCase().trim() === date.toLowerCase().trim() &&
           show.Times.toLowerCase().trim() === time.toLowerCase().trim())
     );
-
-    if (shows.length === originalLength) {
-        return res.status(404).json({ message: "Showtime not found" });
-    }
 
     const newSheet = XLSX.utils.json_to_sheet(shows);
     const newWb = XLSX.utils.book_new();
@@ -162,7 +161,7 @@ app.post("/remove-showtime", (req, res) => {
     res.json({ message: "Showtime removed successfully" });
 });
 
-// Book Seat
+// Booking
 app.post("/book-seat", (req, res) => {
     const { email, location, date, time, accommodation, "Movie Name": movieName, "Selected Seats": selectedSeats, paymentMethod, ticketNumber } = req.body;
     const workbook = XLSX.readFile(BOOKINGS_FILE);
@@ -190,7 +189,7 @@ app.post("/book-seat", (req, res) => {
     res.json({ message: "Booking confirmed!" });
 });
 
-// Admin View Bookings
+// Admin Booking View
 app.get("/admin-get-bookings", (req, res) => {
     const workbook = XLSX.readFile(BOOKINGS_FILE);
     const sheet = workbook.Sheets["Bookings"];
@@ -198,15 +197,20 @@ app.get("/admin-get-bookings", (req, res) => {
     res.json(bookings);
 });
 
-// Get showtimes
+// Movie Showtimes & Movies
 app.get("/get-all-showtimes", (req, res) => {
     const workbook = XLSX.readFile(MOVIESHOWS_FILE);
     const sheet = workbook.Sheets["Showtimes"];
-    const shows = XLSX.utils.sheet_to_json(sheet);
-    res.json(shows);
+    res.json(XLSX.utils.sheet_to_json(sheet));
 });
 
-// API to deactivate booking
+app.get("/get-all-movies", (req, res) => {
+    const workbook = XLSX.readFile(MOVIES_FILE);
+    const sheet = workbook.Sheets["Movies"];
+    res.json(XLSX.utils.sheet_to_json(sheet));
+});
+
+// Deactivate booking
 app.post("/deactivate-booking", (req, res) => {
     const { confirmationNumber } = req.body;
     const workbook = XLSX.readFile(BOOKINGS_FILE);
@@ -214,9 +218,8 @@ app.post("/deactivate-booking", (req, res) => {
     const bookings = XLSX.utils.sheet_to_json(sheet);
 
     const booking = bookings.find(b => b["Confirmation Number"] === confirmationNumber);
-    if (!booking) {
-        return res.status(404).json({ message: "Booking not found." });
-    }
+    if (!booking) return res.status(404).json({ message: "Booking not found." });
+
     booking.Status = "Not Active";
 
     const newSheet = XLSX.utils.json_to_sheet(bookings);
@@ -227,13 +230,11 @@ app.post("/deactivate-booking", (req, res) => {
     res.json({ message: "Booking deactivated successfully." });
 });
 
-// 📂 ----------------------- MOVIE ADDING API ------------------------
-
-// Add a movie
+// Add movie
 app.post('/add-movie', upload.single('poster'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ message: 'Poster image missing or invalid format (must be JPG/JPEG).' });
-  }
+    if (!req.file) {
+        return res.status(400).json({ message: 'Poster image missing or invalid format (must be JPG/JPEG).' });
+    }
     const { movieName, rating, synopsis, status } = req.body;
     const poster = req.file.filename;
 
@@ -256,23 +257,14 @@ app.post('/add-movie', upload.single('poster'), (req, res) => {
 
     res.json({ message: "Movie added successfully!" });
 });
-// Get bookings for specific user (Profile Page)
+
+// Get bookings for profile
 app.post("/get-bookings", (req, res) => {
-  const { email } = req.body;
-  const workbook = XLSX.readFile("bookings.xlsx");
-  const sheet = workbook.Sheets["Bookings"];
-  const bookings = XLSX.utils.sheet_to_json(sheet);
-
-  const userBookings = bookings.filter(b => b["User Email"] === email);
-  res.json(userBookings);
-});
-
-// Get all movies
-app.get('/get-all-movies', (req, res) => {
-    const workbook = XLSX.readFile(MOVIES_FILE);
-    const sheet = workbook.Sheets["Movies"];
-    const movies = XLSX.utils.sheet_to_json(sheet);
-    res.json(movies);
+    const { email } = req.body;
+    const workbook = XLSX.readFile("bookings.xlsx");
+    const sheet = workbook.Sheets["Bookings"];
+    const bookings = XLSX.utils.sheet_to_json(sheet);
+    res.json(bookings.filter(b => b["User Email"] === email));
 });
 
 app.listen(3000, () => {
