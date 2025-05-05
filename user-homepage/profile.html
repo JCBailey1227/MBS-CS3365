@@ -53,100 +53,134 @@
 <div id="bookings-list"></div>
 </div>
 <script>
+function formatDate(val) {
+  if (!isNaN(val)) {
+    const epoch = new Date(1900, 0, 1);
+    epoch.setDate(epoch.getDate() + parseInt(val) - 1);
+    return epoch.toLocaleDateString();
+  }
+  return val;
+}
+
 async function fetchProfile() {
-const email = localStorage.getItem('userEmail');
-const res = await fetch('/get-profile', {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({ email })
-});
-const user = await res.json();
-if (res.ok) {
-document.getElementById('name').value = user.name;
-document.getElementById('email').value = user.email;
-document.getElementById('phone').value = user.phone;
-document.getElementById('address').value = user.address;
-document.getElementById('password').value = user.password;
-} else {
-alert(user.message);
+  const email = localStorage.getItem('userEmail');
+  console.log("Loaded userEmail from localStorage:", email);
+
+  const res = await fetch('/get-profile', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email })
+  });
+
+  const user = await res.json();
+  if (res.ok) {
+    document.getElementById('name').value = user.name;
+    document.getElementById('email').value = user.email;
+    document.getElementById('phone').value = user.phone;
+    document.getElementById('address').value = user.address;
+    document.getElementById('password').value = user.password;
+  } else {
+    alert(user.message);
+  }
 }
-}
+
 async function fetchBookings() {
-const email = localStorage.getItem('userEmail');
-const res = await fetch('/get-bookings', {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({ email })
-});
-const bookings = await res.json();
-const container = document.getElementById('bookings-list');
-if (bookings.length === 0) {
-container.innerHTML = `
-<div class="empty-bookings">
-<i class="fas fa-ticket-alt"></i>
-<p>No bookings found.</p>
-</div>
-`;
-return;
+  const email = localStorage.getItem('userEmail');
+  console.log("Fetching bookings for:", email);
+
+  const res = await fetch('/get-bookings', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email })
+  });
+
+  const bookings = await res.json();
+  console.log("Bookings fetched from backend:", bookings);
+
+  const container = document.getElementById('bookings-list');
+  container.innerHTML = '';
+
+  if (bookings.length === 0) {
+    container.innerHTML = `
+      <div class="empty-bookings">
+        <i class="fas fa-ticket-alt"></i>
+        <p>No bookings found.</p>
+      </div>
+    `;
+    return;
+  }
+
+  const showtimesRes = await fetch('/get-all-showtimes');
+  const showtimes = await showtimesRes.json();
+  console.log("Showtimes loaded:", showtimes);
+
+  bookings.forEach(b => {
+    console.log("Checking booking:", b);
+
+    const card = document.createElement('div');
+    card.className = 'booking-card';
+    const seatCount = b["Selected Seats"] ? b["Selected Seats"].split(',').length : 1;
+
+    const exists = showtimes.some(s =>
+      String(s["Movie Name"]).toLowerCase().trim() === String(b["Movie Name"]).toLowerCase().trim() &&
+      String(s.Location).toLowerCase().trim() === String(b.Location).toLowerCase().trim() &&
+      String(s.Date).toLowerCase().trim() === String(b.Date).toLowerCase().trim() &&
+      String(s.Times).toLowerCase().split(',').map(t => t.trim()).includes(String(b.Time).toLowerCase().trim())
+    );
+
+    const isActive = !b.Status || b.Status === "Active";
+    console.log("Exists in showtimes:", exists, "Status:", b.Status);
+
+    if (exists && isActive) {
+      card.innerHTML = `
+        <p class="booking-header"><i class="fas fa-film"></i> <strong>${b["Movie Name"]}</strong></p>
+        <p><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> ${b.Location}</p>
+        <p><i class="fas fa-calendar"></i> <strong>Date:</strong> ${b.Date}</p>
+        <p><i class="fas fa-clock"></i> <strong>Time:</strong> ${b.Time}</p>
+        <p><i class="fas fa-ticket-alt"></i> <strong>Tickets Booked:</strong> ${seatCount}</p>
+        <p><i class="fas fa-tag"></i> <strong>Confirmation #:</strong> ${b["Confirmation Number"] || "Unavailable"}</p>
+      `;
+    } else {
+      card.innerHTML = `
+        <p class="booking-header"><i class="fas fa-film"></i> <strong>${b["Movie Name"]}</strong></p>
+        <div class="error-message">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span><strong>Sorry, your movie ticket is no longer active. Please be on the lookout for refunds.</strong></span>
+        </div>
+      `;
+    }
+
+    container.appendChild(card);
+  });
 }
 
-const showtimesRes = await fetch('/get-all-showtimes');
-const showtimes = await showtimesRes.json();
-bookings.forEach(b => {
-const card = document.createElement('div');
-card.className = 'booking-card';
-const seatCount = b["Selected Seats"] ? b["Selected Seats"].split(',').length : 1;
+document.getElementById('profile-form').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  const data = {
+    email: document.getElementById('email').value,
+    name: document.getElementById('name').value,
+    phone: document.getElementById('phone').value,
+    address: document.getElementById('address').value,
+    password: document.getElementById('password').value
+  };
 
-const exists = showtimes.some(s => 
-s["Movie Name"]?.toLowerCase().trim() === b["Movie Name"]?.toLowerCase().trim() &&
-s.Location?.toLowerCase().trim() === b.Location?.toLowerCase().trim() &&
-s.Date?.toLowerCase().trim() === b.Date?.toLowerCase().trim() &&
-s.Times?.toLowerCase().trim() === b.Time?.toLowerCase().trim()
-);
-const isActive = !b.Status || b.Status === "Active";
-if (exists && isActive) {
-card.innerHTML = `
-<p class="booking-header"><i class="fas fa-film"></i> <strong>${b["Movie Name"]}</strong></p>
-<p><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> ${b.Location}</p>
-<p><i class="fas fa-calendar"></i> <strong>Date:</strong> ${b.Date}</p>
-<p><i class="fas fa-clock"></i> <strong>Time:</strong> ${b.Time}</p>
-<p><i class="fas fa-ticket-alt"></i> <strong>Tickets Booked:</strong> ${seatCount}</p>
-<p><i class="fas fa-tag"></i> <strong>Confirmation #:</strong> ${b["Confirmation Number"] || "Unavailable"}</p>
-`;
-} else {
-card.innerHTML = `
-<p class="booking-header"><i class="fas fa-film"></i> <strong>${b["Movie Name"]}</strong></p>
-<div class="error-message">
-<i class="fas fa-exclamation-triangle"></i>
-<span><strong>Sorry, your movie ticket is no longer active. Please be on the lookout for refunds.</strong></span>
-</div>
-`;
-}
-container.appendChild(card);
+  const res = await fetch('/update-profile', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+
+  const msg = await res.json();
+  alert(msg.message);
+  if (res.ok) {
+    window.location.href = '/user-homepage/homepage.html';
+  }
 });
-}
-document.getElementById('profile-form').addEventListener('submit', async function(e) {
-e.preventDefault();
-const data = {
-email: document.getElementById('email').value,
-name: document.getElementById('name').value,
-phone: document.getElementById('phone').value,
-address: document.getElementById('address').value,
-password: document.getElementById('password').value
-};
-const res = await fetch('/update-profile', {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify(data)
-});
-const msg = await res.json();
-alert(msg.message);
-if (res.ok) {
-window.location.href = '/user-homepage/homepage.html';
-}
-});
+
 fetchProfile();
 fetchBookings();
 </script>
+
+
 </body>
 </html>
