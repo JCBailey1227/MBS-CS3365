@@ -159,18 +159,35 @@ app.post("/update-profile", (req, res) =>
 
 // Add/Remove Showtimes
 app.post("/add-showtime", (req, res) =>
-{
-    const { movieName, location, date, time, price } = req.body;
-    const workbook = XLSX.readFile(MOVIESHOWS_FILE);
-    const sheet = workbook.Sheets["Showtimes"];
-    const shows = XLSX.utils.sheet_to_json(sheet);
-    shows.push({ "Movie Name": movieName, Location: location, Date: date, Times: time, Price: price });
-    const newSheet = XLSX.utils.json_to_sheet(shows);
-    const newWb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(newWb, newSheet, "Showtimes");
-    XLSX.writeFile(newWb, MOVIESHOWS_FILE);
-    res.json({ message: "Showtime added successfully" });
-});
+    {
+        const { movieName, location, date, time, price } = req.body;
+    
+        const workbook = XLSX.readFile(MOVIESHOWS_FILE);
+        const sheet = workbook.Sheets["Showtimes"];
+        const shows = XLSX.utils.sheet_to_json(sheet);
+    
+        const formattedTime = typeof time === "number"
+            ? XLSX.SSF.format("hh:mm AM/PM", time)
+            : time.toString().trim();
+    
+        shows.push({
+            "Movie Name": movieName,
+            Location: location,
+            Date: typeof date === "number"
+            ? XLSX.SSF.format("mmmm d", date)
+            : date.toString().trim(),        
+            Times: formattedTime,
+            Price: price
+        });
+    
+        const newSheet = XLSX.utils.json_to_sheet(shows);
+        const newWb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(newWb, newSheet, "Showtimes");
+        XLSX.writeFile(newWb, MOVIESHOWS_FILE);
+    
+        res.json({ message: "Showtime added successfully" });
+    });
+    
 
 app.post("/remove-showtime", (req, res) =>
 {
@@ -209,7 +226,9 @@ app.post("/book-seat", (req, res) =>
         "User Email": email,
         "Movie Name": movieName,
         "Location": location,
-        "Date": date,
+        "Date": typeof date === "number"
+    ? XLSX.SSF.format("mmmm d, yyyy", date)
+    : date.toString().trim(),
         "Time": time,
         "Accommodation": accommodation || "No",
         "Selected Seats": selectedSeats || "",
@@ -301,7 +320,7 @@ app.post("/add-movie", upload.single('poster'), (req, res) =>
 app.post("/get-bookings", (req, res) =>
 {
     const { email } = req.body;
-    const workbook = XLSX.readFile("bookings.xlsx");
+    const workbook = XLSX.readFile(BOOKINGS_FILE);
     const sheet = workbook.Sheets["Bookings"];
     const bookings = XLSX.utils.sheet_to_json(sheet);
     res.json(bookings.filter(b => b["User Email"] === email));
