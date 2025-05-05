@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forgot Password</title>
+  <link rel="stylesheet" href="forgot.css">
+</head>
+<body>
+  <div class="forgot-container">
+    <h2>Forgot Password</h2>
+    <form id="forgot-form">
+      <input type="email" id="email" placeholder="Enter your Email" required />
+      <input type="password" id="new-password" placeholder="Enter new Password" required />
+      <button type="submit">Reset Password</button>
+    </form>
+  </div>
+  <script>
+    document.getElementById("forgot-form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const data = {
+        email: document.getElementById("email").value,
+        newPassword: document.getElementById("new-password").value
+      };
+      const res = await fetch("/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+      const msg = await res.json();
+      alert(msg.message);
+      if (res.ok) {
+        window.location.href = "index.html";
+      }
+    });
+  </script>
+</body>
+</html>

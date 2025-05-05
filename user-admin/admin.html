@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Admin Dashboard</title>
+<link href="admin.css" rel="stylesheet"/>
+</head>
+<body>
+<header>
+<div class="container header-content">
+<div class="logo">
+<i class="fas fa-film"></i>
+Admin Dashboard
+</div>
+<button class="logout-btn" onclick="logout()">
+<i class="fas fa-sign-out-alt"></i>
+Logout
+</button>
+</div>
+</header>
+<main class="container">
+<div class="card">
+<div class="card-header">
+<h2 class="card-title">
+<i class="fas fa-plus-circle"></i>
+Add New Movie
+</h2>
+</div>
+<div class="card-body">
+<form class="form-grid" enctype="multipart/form-data" id="add-movie-form">
+<div class="form-group">
+<label class="form-label" for="movie-name">Movie Name</label>
+<input class="form-control" id="movie-name" placeholder="Enter movie title" required="" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label" for="rating">Rating</label>
+<input class="form-control" id="rating" placeholder="e.g., 4.5" required="" type="text"/>
+</div>
+<div class="form-group full-width">
+<label class="form-label" for="synopsis">Synopsis</label>
+<textarea class="form-control" id="synopsis" placeholder="Enter movie description" required="" rows="3"></textarea>
+</div>
+<div class="form-group">
+<label class="form-label" for="status">Status</label>
+<select class="form-control" id="status" required="">
+<option value="">Select Status</option>
+<option value="Now Showing">Now Showing</option>
+<option value="Upcoming">Upcoming</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label" for="poster">Movie Poster</label>
+<div class="file-input-wrapper">
+<input accept=".jpg,.jpeg" id="poster" name="poster" required="" type="file"/>
+<label class="file-input-label" for="poster">
+<i class="fas fa-cloud-upload-alt file-input-icon"></i>
+<span>Choose a poster image</span>
+<small style="display: block; margin-top: 0.5rem; color: var(--text-muted);">JPG/JPEG only</small>
+</label>
+</div>
+</div>
+<div class="btn-row">
+<button class="btn btn-primary" type="submit">
+<i class="fas fa-plus"></i>
+Add Movie
+</button>
+</div>
+</form>
+</div>
+</div>
+<div class="card">
+<div class="card-header">
+<h2 class="card-title">
+<i class="fas fa-clock"></i>
+Add New Movie Timing
+</h2>
+</div>
+<div class="card-body">
+<form class="form-grid" id="add-showtime-form">
+<div class="form-group">
+<label class="form-label" for="show-movie-name">Movie Name</label>
+<input class="form-control" id="show-movie-name" placeholder="Enter movie title" required="" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label" for="location">Location</label>
+<input class="form-control" id="location" placeholder="Cinema location" required="" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label" for="date">Date</label>
+<input class="form-control" id="date" placeholder="e.g., May 5" required="" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label" for="time">Time</label>
+<input class="form-control" id="time" placeholder="e.g., 5:00 PM" required="" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label" for="price">Ticket Price</label>
+<input class="form-control" id="price" placeholder="Enter price" required="" type="number"/>
+</div>
+<div class="btn-row">
+<button class="btn btn-primary" type="submit">
+<i class="fas fa-plus"></i>
+Add Showtime
+</button>
+</div>
+</form>
+</div>
+</div>
+<div class="card">
+<div class="card-header">
+<h2 class="card-title">
+<i class="fas fa-trash-alt"></i>
+Remove Existing Timing
+</h2>
+</div>
+<div class="card-body">
+<form class="form-grid" id="remove-showtime-form">
+<div class="form-group">
+<label class="form-label" for="remove-movie-name">Movie Name</label>
+<input class="form-control" id="remove-movie-name" placeholder="Enter movie title" required="" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label" for="remove-location">Location</label>
+<input class="form-control" id="remove-location" placeholder="Cinema location" required="" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label" for="remove-date">Date</label>
+<input class="form-control" id="remove-date" placeholder="e.g., May 5" required="" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label" for="remove-time">Time</label>
+<input class="form-control" id="remove-time" placeholder="e.g., 5:00 PM" required="" type="text"/>
+</div>
+<div class="btn-row">
+<button class="btn btn-danger" type="submit">
+<i class="fas fa-trash"></i>
+Remove Showtime
+</button>
+</div>
+</form>
+</div>
+</div>
+<div class="card">
+<div class="card-header">
+<h2 class="card-title">
+<i class="fas fa-ticket-alt"></i>
+All Bookings
+</h2>
+</div>
+<div class="card-body">
+<button class="btn btn-outline" onclick="fetchBookings()">
+<i class="fas fa-refresh"></i>
+View All Bookings
+</button>
+<div class="table-container">
+<table id="bookings-table" style="display:none;">
+<thead>
+<tr>
+<th>User Email</th>
+<th>Movie</th>
+<th>Location</th>
+<th>Date</th>
+<th>Time</th>
+<th>Seats</th>
+<th>Accommodation</th>
+<th>Confirmation #</th>
+<th>Status</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody id="bookings-body">
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<script>
+function logout() {
+localStorage.removeItem('userLoggedIn');
+localStorage.removeItem('userEmail');
+window.location.href = "/user-login/loggedout.html";
+}
+</script>
+<script src="admin.js"></script>
+</body>
+</html>
