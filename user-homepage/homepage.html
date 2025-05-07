@@ -1,98 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Movie Booking System</title>
-<link rel="stylesheet" href="/user-homepage/homepage.css">
-<link rel="icon" type="image/x-icon" href="/Favicon.webp">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Movie Booking System</title>
+  <link rel="stylesheet" href="/user-homepage/homepage.css">
+  <link rel="icon" type="image/x-icon" href="/Favicon.webp">
 </head>
 <body>
-<header>
-<div class="logo">🎬 MovieBooking</div>
-<div class="auth-buttons" id="auth-buttons"></div>
-</header>
-<section class="hero">
-<div class="hero-content">
-<h1>Book Your Tickets Online</h1>
-<p class = "marquee-text">Skip the line and enjoy your favorite movies at any of our six locations</p>
-</div>
-</section>
-<h2 class="section-title">Currently Playing</h2>
-<div class="movie-grid" id="now-showing-grid"></div>
-<h2 class="section-title">Coming Soon</h2>
-<div class="movie-grid" id="upcoming-grid"></div>
-<script>
-localStorage.removeItem('selectedMovie');
-const authDiv = document.getElementById('auth-buttons');
-const loggedIn = localStorage.getItem('userLoggedIn') === 'true';
-const email = localStorage.getItem('userEmail');
-if (loggedIn && email) {
-authDiv.innerHTML = `
-<span>Welcome, <strong>${email}</strong></span>
-<button onclick="goToProfile()">Profile</button>
-<button onclick="logout()">Logout</button>
-`;
-} else {
-authDiv.innerHTML = `
-<span style="color: #aaa;">Not logged in</span>
-<button onclick="window.location.href='/user-login/index.html'">Login</button>
-<button onclick="window.location.href='/user-login/register.html'">Register</button>
-`;
-}
-function logout() {
-localStorage.removeItem('userLoggedIn');
-localStorage.removeItem('userEmail');
-window.location.href = '/user-homepage/homepage.html';  // redirect to homepage
-}
-function goToProfile() {
-window.location.href = '/user-homepage/profile.html';
-}
-function selectMovie(movie) {
-const loggedIn = localStorage.getItem('userLoggedIn') === 'true';
-if (!loggedIn) {
-alert("Please log in to book tickets.");
-window.location.href = '/user-login/index.html';
-return;
-}
-localStorage.setItem('selectedMovie', JSON.stringify({
-title: movie["Movie Name"],
-poster: movie.Poster,
-rating: movie.Rating,
-synopsis: movie.Synopsis,
-status: movie.Status
-}));
-window.location.href = '/user-homepage/movie.html';
-}
-async function loadMovies() {
-const res = await fetch('/get-all-movies');
-const movies = await res.json();
-const nowShowingGrid = document.getElementById('now-showing-grid');
-const upcomingGrid = document.getElementById('upcoming-grid');
-movies.forEach(movie => {
-const card = document.createElement('div');
-card.className = 'movie-card';
-card.innerHTML = `
-<img src="${movie.Poster}" alt="${movie["Movie Name"]}" class="movie-poster" />
-<div class="movie-info">
-<h3 class="movie-title">${movie["Movie Name"]}</h3>
-<p class="movie-meta">⭐ ${movie.Rating}</p>
-${movie.Status === 'Now Showing' ? `<button class="book-now-btn">Book Now</button>` : ''}
-</div>
-`;
-if (movie.Status === 'Upcoming') {
-const label = document.createElement('div');
-label.className = 'upcoming-label';
-label.textContent = 'Upcoming';
-card.appendChild(label);
-}
-card.querySelector('.book-now-btn')?.addEventListener('click', () => selectMovie(movie));
-movie.Status === 'Now Showing'
-? nowShowingGrid.appendChild(card)
-: upcomingGrid.appendChild(card);
-});
-}
-loadMovies();
-</script>
+  <!-- Header section with logo and authentication buttons -->
+  <header>
+    <div class="logo">🎬 MovieBooking</div>
+    <div class="auth-buttons" id="auth-buttons"></div>
+  </header>
+  
+  <!-- welcome message -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Book Your Tickets Online</h1>
+      <p class="marquee-text">Skip the line and enjoy your favorite movies at any of our six locations</p>
+    </div>
+  </section>
+  
+  <!-- Currently Playing -->
+  <h2 class="section-title">Currently Playing</h2>
+  <div class="movie-grid" id="now-showing-grid"></div>
+  
+  <!-- Coming Soon  -->
+  <h2 class="section-title">Coming Soon</h2>
+  <div class="movie-grid" id="upcoming-grid"></div>
+  
+  <!-- JavaScript -->
+  <script>
+    localStorage.removeItem('selectedMovie');
+    
+    const authDiv = document.getElementById('auth-buttons');
+    const loggedIn = localStorage.getItem('userLoggedIn') === 'true';
+    const email = localStorage.getItem('userEmail');
+    
+    // Options to go to profile or logout
+    if (loggedIn && email) {
+      authDiv.innerHTML = `
+        <span>Welcome, <strong>${email}</strong></span>
+        <button onclick="goToProfile()">Profile</button>
+        <button onclick="logout()">Logout</button>
+      `;
+    } else {
+      // Options to login or register
+      authDiv.innerHTML = `
+        <span style="color: #aaa;">Not logged in</span>
+        <button onclick="window.location.href='/user-login/index.html'">Login</button>
+        <button onclick="window.location.href='/user-login/register.html'">Register</button>
+      `;
+    }
+
+    // Function to log out 
+    function logout() {
+      localStorage.removeItem('userLoggedIn');
+      localStorage.removeItem('userEmail');
+      window.location.href = '/user-homepage/homepage.html';  // Redirect to homepage
+    }
+    
+    // Function to navigate to profile page
+    function goToProfile() {
+      window.location.href = '/user-homepage/profile.html';
+    }
+    
+    // Function to select a movie for booking, checks if the user is logged in
+    function selectMovie(movie) {
+      const loggedIn = localStorage.getItem('userLoggedIn') === 'true';
+      if (!loggedIn) {
+        alert("Please log in to book tickets.");
+        window.location.href = '/user-login/index.html';
+        return;
+      }
+      
+      // Save the selected movie details in localStorage
+      localStorage.setItem('selectedMovie', JSON.stringify({
+        title: movie["Movie Name"],
+        poster: movie.Poster,
+        rating: movie.Rating,
+        synopsis: movie.Synopsis,
+        status: movie.Status
+      }));
+      
+      // Redirect to the movie booking page
+      window.location.href = '/user-homepage/movie.html';
+    }
+    
+    // Function to fetch and load movie data from the server
+    async function loadMovies() {
+      const res = await fetch('/get-all-movies');
+      const movies = await res.json();
+      
+      // Grabbing the sections where movies will be displayed
+      const nowShowingGrid = document.getElementById('now-showing-grid');
+      const upcomingGrid = document.getElementById('upcoming-grid');
+      
+      // Loop through each movie and create a card to display
+     movies.forEach(movie => {
+        const card = document.createElement('div');
+        card.className = 'movie-card';
+        card.innerHTML = `
+          <img src="${movie.Poster}" alt="${movie["Movie Name"]}" class="movie-poster" />
+          <div class="movie-info">
+            <h3 class="movie-title">${movie["Movie Name"]}</h3>
+            <p class="movie-meta">⭐ ${movie.Rating}</p>
+            ${movie.Status === 'Now Showing' ? `<button class="book-now-btn">Book Now</button>` : ''}
+          </div>
+        `;
+        
+        // Movie is coming soon
+        if (movie.Status === 'Upcoming') {
+          const label = document.createElement('div');
+          label.className = 'upcoming-label';
+          label.textContent = 'Upcoming';
+          card.appendChild(label);
+        }
+        
+        // Add event listener for the 'Book Now' button
+        card.querySelector('.book-now-btn')?.addEventListener('click', () => selectMovie(movie));
+        
+        // Append the movie card to the appropriate section based on status
+        movie.Status === 'Now Showing'
+          ? nowShowingGrid.appendChild(card)
+          : upcomingGrid.appendChild(card);
+      });
+    }
+    
+    // Load movies when the page is loaded
+    loadMovies();
+  </script>
 </body>
 </html>

@@ -1,16 +1,20 @@
+// Listen for form submission
 document.getElementById('payment-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
+  e.preventDefault(); // Prevent default
 
+  // Get selected payment method
   const paymentMethod = document.getElementById('payment-method').value;
   const cardNumber = document.getElementById('card-number')?.value.trim();
   const expiry = document.getElementById('expiry')?.value.trim();
   const cvv = document.getElementById('cvv')?.value.trim();
 
+  // Ensure a payment method is selected
   if (!paymentMethod) {
     alert("Please select a payment method.");
     return;
   }
 
+  //validate
   if (paymentMethod === "Credit Card") {
     if (!cardNumber || cardNumber.length !== 16 || !/^\d+$/.test(cardNumber)) {
       alert("Invalid card number. Card number must be 16 digits.");
@@ -25,7 +29,7 @@ document.getElementById('payment-form').addEventListener('submit', async (e) => 
       return;
     }
   }
-
+  //Retrieve stored booking
   const bookingInfo = JSON.parse(localStorage.getItem('bookingInfo'));
   const email = localStorage.getItem('userEmail');
   const accommodation = localStorage.getItem('specialAccommodation');
@@ -35,10 +39,11 @@ document.getElementById('payment-form').addEventListener('submit', async (e) => 
     alert('Missing booking information.');
     return;
   }
-
+  // Generate and save a random ticket number
   const ticketNumber = 'TKT-' + Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
   localStorage.setItem('ticketNumber', ticketNumber);
 
+  // Send booking request to server
   const res = await fetch("/book-seat", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -55,6 +60,7 @@ document.getElementById('payment-form').addEventListener('submit', async (e) => 
     })
   });
 
+  // Show response message and redirect if successful
   const msg = await res.json();
   alert(msg.message);
 
@@ -63,7 +69,7 @@ document.getElementById('payment-form').addEventListener('submit', async (e) => 
   }
 });
 
-// 🎯 Handle dynamic hiding of card details
+// Toggle visibility of credit card fields
 document.getElementById('payment-method').addEventListener('change', () => {
   const method = document.getElementById('payment-method').value;
   const cardFields = ['card-name', 'card-number', 'expiry', 'cvv'];

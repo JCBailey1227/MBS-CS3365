@@ -1,4 +1,4 @@
-
+/* body */
 body {
   background-color: #0f0f0f;
   color: #fff;
@@ -9,14 +9,18 @@ body {
   height: 100vh;
   margin: 0;
 }
+
+/* Forgot password container */
 .forgot-container {
   background: #1e1e1e;
   padding: 3em;
   border-radius: 12px;
-  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
   max-width: 400px;
   width: 100%;
 }
+
+/* Input styling */
 input {
   width: 100%;
   padding: 12px;
@@ -25,6 +29,8 @@ input {
   border-radius: 5px;
   font-size: 16px;
 }
+
+/* Button styling */
 button {
   width: 100%;
   padding: 12px;
@@ -36,6 +42,8 @@ button {
   cursor: pointer;
   margin-top: 10px;
 }
+
+/* Button hover effect */
 button:hover {
   background-color: #0194bb;
 }

@@ -1,54 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Login - MovieTime</title>
-<link rel="stylesheet" href="index.css">
-<link rel="icon" type="image/x-icon" href="/Favicon.webp">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - MovieTime</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="icon" type="image/x-icon" href="/Favicon.webp">
 </head>
 <body>
-<div class="login-container">
-<div class="logo">🎬 MovieTime</div>
-<h2>Login to Your Account</h2>
-<form id="login-form">
-<div class="form-group">
-<input id="login-email" type="email" placeholder="Email Address" class="input-with-icon" required />
-</div>
-<div class="form-group">
-<input id="login-password" type="password" placeholder="Password" class="input-with-icon" required />
-</div>
-<button type="submit">Login</button>
-</form>
-<div class="link">
-<p>Don't have an account? <a href="register.html">Register here</a></p>
-<p><a href="forgot.html">🔒 Forgot Password?</a></p>
-</div>
-</div>
-<script>
-document.getElementById("login-form").addEventListener("submit", async function (e) {
-e.preventDefault();
-const data = {
-email: document.getElementById("login-email").value,
-password: document.getElementById("login-password").value
-};
-const res = await fetch("/login", {
-method: "POST",
-headers: { "Content-Type": "application/json" },
-body: JSON.stringify(data)
-});
-const msg = await res.json();
-alert(msg.message);
-if (res.ok) {
-localStorage.setItem('userLoggedIn', 'true');
-localStorage.setItem('userEmail', data.email);
-if (data.email === 'admin@mbs.com') {
-window.location.href = "/user-admin/admin.html";
-} else {
-window.location.href = "/user-homepage/homepage.html";
-}
-}
-});
-</script>
+  <div class="login-container">
+    <div class="logo">🎬 MovieTime</div>
+    <!-- Login form heading -->
+    <h2>Login to Your Account</h2>
+    <!-- Login form -->
+    <form id="login-form">
+      <!-- Email input field -->
+      <div class="form-group">
+        <input id="login-email" type="email" placeholder="Email Address" class="input-with-icon" required />
+      </div>
+      <!-- Password input -->
+      <div class="form-group">
+        <input id="login-password" type="password" placeholder="Password" class="input-with-icon" required />
+      </div>
+      <!-- Submit button -->
+      <button type="submit">Login</button>
+    </form>
+    <!-- Links for registration and password reset -->
+    <div class="link">
+      <p>Don't have an account? <a href="register.html">Register here</a></p>
+      <p><a href="forgot.html">🔒 Forgot Password?</a></p>
+    </div>
+  </div>
+
+  <!-- JavaScript to handle login form-->
+  <script>
+    document.getElementById("login-form").addEventListener("submit", async function (e) {
+      e.preventDefault(); // Prevent default form
+
+      // Collect email and password
+      const data = {
+        email: document.getElementById("login-email").value,
+        password: document.getElementById("login-password").value
+      };
+
+      // Send POST request to /login route
+      const res = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      // Show server response message as alert
+      const msg = await res.json();
+      alert(msg.message);
+
+      // If login is successful
+      if (res.ok) {
+        // Save login state and email
+        localStorage.setItem('userLoggedIn', 'true');
+        localStorage.setItem('userEmail', data.email);
+
+        // Redirect admin to admin panel, others to homepage
+        if (data.email === 'admin@mbs.com') {
+          window.location.href = "/user-admin/admin.html";
+        } else {
+          window.location.href = "/user-homepage/homepage.html";
+        }
+      }
+    });
+  </script>
+
 </body>
 </html>

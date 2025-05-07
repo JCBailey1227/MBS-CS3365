@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,27 +9,45 @@
 </head>
 <body>
   <div class="forgot-container">
+    <!-- Heading for the forgot password section -->
     <h2>Forgot Password</h2>
+    
+    <!-- Forgot password form with email and new password fields -->
     <form id="forgot-form">
+      <!-- Input for the user's email address -->
       <input type="email" id="email" placeholder="Enter your Email" required />
+      
+      <!-- Input for the new password the user wants to set -->
       <input type="password" id="new-password" placeholder="Enter new Password" required />
+      
+      <!-- Submit button to trigger password reset -->
       <button type="submit">Reset Password</button>
     </form>
   </div>
+  
   <script>
+    // Event listener for form submission
     document.getElementById("forgot-form").addEventListener("submit", async function(e) {
-      e.preventDefault();
+      e.preventDefault(); // Prevent default form submission
+      
+      // Gather data from the form inputs
       const data = {
         email: document.getElementById("email").value,
         newPassword: document.getElementById("new-password").value
       };
+
+      // Send a POST request to the server with the form data
       const res = await fetch("/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
       });
+
+      // Parse the server response
       const msg = await res.json();
-      alert(msg.message);
+      alert(msg.message); // Show the response message (success/error)
+
+      // If the response is successful, redirect to the homepage
       if (res.ok) {
         window.location.href = "index.html";
       }

@@ -1,4 +1,3 @@
-
 body {
   background-color: #0f0f0f;
   color: #ffffff;
@@ -6,13 +5,25 @@ body {
   margin: 0;
   padding: 0;
 }
+
+/*fade-in animation */
 .fade-in {
   animation: fadeIn 1s ease-in;
 }
+
+/*Keyframes for fade-in animation */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { 
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
+/* Styles for the "Book Now" */
 .booknow {
   width: 100%;
   padding: 12px;
@@ -24,9 +35,13 @@ body {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
+
+/* shade when hovering the button */
 .booknow:hover {
   background-color: #0194bb;
 }
+
+/* Common styles for dropdowns and input fields */
 select, input {
   background-color: #1e1e1e;
   color: white;

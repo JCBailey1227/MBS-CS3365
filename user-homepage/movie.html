@@ -1,99 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Movie Details</title>
-<link rel="stylesheet" href="movie.css">
-<link rel="icon" type="image/x-icon" href="/Favicon.webp">
+  <meta charset="UTF-8">
+  <title>Movie Details</title>
+  <link rel="stylesheet" href="movie.css">
+  <link rel="icon" type="image/x-icon" href="/Favicon.webp">
 </head>
 <body>
-<div class="container">
-<div class="left">
-<img id="movie-poster" src="" alt="Movie Poster">
-<div class="rating" id="movie-rating"></div>
-<div class="synopsis" id="movie-synopsis"></div>
-<div class="reviews">
-<h3>Leave a Review:</h3>
-<textarea id="review-input" placeholder="Write your review..."></textarea><br>
-<button onclick="submitReview()">Submit Review</button>
-<div class="review-list" id="review-list"></div>
-</div>
-</div>
-<div class="right">
-<h2>Select Location:</h2>
-<select id="location-select" onchange="showTimings()">
-<option value="">--Choose Location--</option>
-<option value="Snyder">Snyder</option>
-<option value="Abilene">Abilene</option>
-<option value="Amarillo">Amarillo</option>
-<option value="Lubbock">Lubbock</option>
-<option value="Plainview">Plainview</option>
-<option value="Levelland">Levelland</option>
-</select>
-<div class="timings" id="timings"></div>
-</div>
-</div>
-<script>
-const movieData = JSON.parse(localStorage.getItem('selectedMovie'));
-if (!movieData) {
-window.location.href = '/user-homepage/homepage.html';
-}
-document.getElementById('movie-poster').src = movieData.poster;
-document.getElementById('movie-rating').textContent = `IMdB Rating: ${movieData.rating}`;
-document.getElementById('movie-synopsis').textContent = movieData.synopsis;
-async function fetchShowtimes() {
-const res = await fetch('/get-all-showtimes');
-return await res.json();
-}
-async function showTimings() {
-const location = document.getElementById('location-select').value;
-const timingsDiv = document.getElementById('timings');
-timingsDiv.innerHTML = '';
-const shows = await fetchShowtimes();
-const filteredShows = shows.filter(show => 
-show.Location === location && show["Movie Name"] === movieData.title
-);
-filteredShows.forEach(show => {
-const times = show.Times.split(',').map(t => t.trim());
-const date = show.Date;
-const dateTitle = document.createElement('div');
-dateTitle.className = 'timing-date';
-dateTitle.textContent = date;
-timingsDiv.appendChild(dateTitle);
-times.forEach(time => {
-const btn = document.createElement('button');
-btn.className = 'timing-button';
-btn.textContent = time;
-btn.onclick = () => selectTime(show["Movie Name"], location, date, time);
-timingsDiv.appendChild(btn);
-});
-});
-}
-function selectTime(movieName, location, date, time) {
-localStorage.setItem('bookingInfo', JSON.stringify({ movieName, location, date, time }));
-window.location.href = '/user-seatbooking/seats.html';
-}
-function submitReview() {
-const review = document.getElementById('review-input').value.trim();
-if (review === '') return;
-let reviews = JSON.parse(localStorage.getItem('reviews_' + movieData.title)) || [];
-reviews.push('Anonymous User: ' + review);
-localStorage.setItem('reviews_' + movieData.title, JSON.stringify(reviews));
-document.getElementById('review-input').value = '';
-renderReviews();
-}
-function renderReviews() {
-const reviewList = document.getElementById('review-list');
-reviewList.innerHTML = '';
-const reviews = JSON.parse(localStorage.getItem('reviews_' + movieData.title)) || [];
-reviews.forEach(r => {
-const div = document.createElement('div');
-div.className = 'review-item';
-div.textContent = r;
-reviewList.appendChild(div);
-});
-}
-renderReviews();
-</script>
+  <div class="container">
+    
+    <!-- Left section: Movie poster, rating, synopsis, and reviews -->
+    <div class="left">
+      <!-- Movie Poster -->
+      <img id="movie-poster" src="" alt="Movie Poster">
+      
+      <!-- Movie Rating -->
+      <div class="rating" id="movie-rating"></div>
+      
+      <!-- Movie Synopsis -->
+      <div class="synopsis" id="movie-synopsis"></div>
+      
+      <!-- Reviews Section -->
+      <div class="reviews">
+        <h3>Leave a Review:</h3>
+        <!-- Review input box -->
+        <textarea id="review-input" placeholder="Write your review..."></textarea><br>
+        <!-- Submit review button -->
+        <button onclick="submitReview()">Submit Review</button>
+        
+        <!-- List of all reviews -->
+        <div class="review-list" id="review-list"></div>
+      </div>
+    </div>
+    
+    <!-- Right section: Movie showtimes based on location -->
+    <div class="right">
+      <h2>Select Location:</h2>
+      <!-- Dropdown menu for selecting location -->
+      <select id="location-select" onchange="showTimings()">
+        <option value="">--Choose Location--</option>
+        <option value="Snyder">Snyder</option>
+        <option value="Abilene">Abilene</option>
+        <option value="Amarillo">Amarillo</option>
+        <option value="Lubbock">Lubbock</option>
+        <option value="Plainview">Plainview</option>
+        <option value="Levelland">Levelland</option>
+      </select>
+      
+      <!-- Section to display movie showtimes -->
+      <div class="timings" id="timings"></div>
+    </div>
+  </div>
+
+  <script>
+    // Fetch the selected movie data from localStorage
+    const movieData = JSON.parse(localStorage.getItem('selectedMovie'));
+    if (!movieData) {
+      // Redirect to homepage if no movie is selected
+      window.location.href = '/user-homepage/homepage.html';
+    }
+
+    // Set movie poster, rating, and synopsis based on movieData
+    document.getElementById('movie-poster').src = movieData.poster;
+    document.getElementById('movie-rating').textContent = `IMdB Rating: ${movieData.rating}`;
+    document.getElementById('movie-synopsis').textContent = movieData.synopsis;
+
+    // Function to fetch all showtimes from the server
+    async function fetchShowtimes() {
+      const res = await fetch('/get-all-showtimes');
+      return await res.json();
+    }
+
+    // Function to display movie timings based on selected location
+    async function showTimings() {
+      const location = document.getElementById('location-select').value;
+      const timingsDiv = document.getElementById('timings');
+      timingsDiv.innerHTML = ''; // Clear any previous timings
+
+      const shows = await fetchShowtimes(); // Fetch all available showtimes
+      const filteredShows = shows.filter(show => 
+        show.Location === location && show["Movie Name"] === movieData.title
+      );
+
+      // Display filtered showtimes for the selected location
+      filteredShows.forEach(show => {
+        const times = show.Times.split(',').map(t => t.trim());
+        const date = show.Date;
+        
+        // Create a title for the show date
+        const dateTitle = document.createElement('div');
+        dateTitle.className = 'timing-date';
+        dateTitle.textContent = date;
+        timingsDiv.appendChild(dateTitle);
+        
+        // Create a button for each showtime
+        times.forEach(time => {
+          const btn = document.createElement('button');
+          btn.className = 'timing-button';
+          btn.textContent = time;
+          btn.onclick = () => selectTime(show["Movie Name"], location, date, time);
+          timingsDiv.appendChild(btn);
+        });
+      });
+    }
+
+    // Function to save selected time and redirect to seat booking page
+    function selectTime(movieName, location, date, time) {
+      localStorage.setItem('bookingInfo', JSON.stringify({ movieName, location, date, time }));
+      window.location.href = '/user-seatbooking/seats.html';
+    }
+
+    // Function to handle the submission of a review
+    function submitReview() {
+      const review = document.getElementById('review-input').value.trim();
+      if (review === '') return; // Don't submit if the review is empty
+
+      // Retrieve existing reviews or initialize an empty array
+      let reviews = JSON.parse(localStorage.getItem('reviews_' + movieData.title)) || [];
+      reviews.push('Anonymous User: ' + review); // Add the new review
+
+      // Save updated reviews back to localStorage
+      localStorage.setItem('reviews_' + movieData.title, JSON.stringify(reviews));
+
+      // Clear review input and re-render the reviews list
+      document.getElementById('review-input').value = '';
+      renderReviews();
+    }
+
+    // Function to render all reviews for the movie
+    function renderReviews() {
+      const reviewList = document.getElementById('review-list');
+      reviewList.innerHTML = ''; // Clear the previous list of reviews
+
+      const reviews = JSON.parse(localStorage.getItem('reviews_' + movieData.title)) || [];
+      reviews.forEach(r => {
+        const div = document.createElement('div');
+        div.className = 'review-item';
+        div.textContent = r;
+        reviewList.appendChild(div);
+      });
+    }
+
+    // Initial call to render any existing reviews
+    renderReviews();
+  </script>
 </body>
 </html>

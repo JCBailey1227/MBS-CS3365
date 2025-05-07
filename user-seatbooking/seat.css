@@ -6,21 +6,25 @@ body {
   padding: 0;
 }
 
+/* Fade-in animation */
 .fade-in {
   animation: fadeIn 1s ease-in;
   padding: 20px;
 }
 
+/* Style for movie-related elements */
 .movie-container {
   margin: 20px 0;
   font-size: 18px;
 }
 
+/*3D effect*/
 .container {
   perspective: 1000px;
   margin-bottom: 30px;
 }
 
+/*theater screen*/
 .screen {
   background-color: #01b4e4;
   height: 50px;
@@ -29,12 +33,14 @@ body {
   border-radius: 15px;
 }
 
+/*Layout for seats*/
 .row {
   display: flex;
   justify-content: center;
   margin: 8px 0;
 }
 
+/* Style for seat*/
 .seat {
   background-color: white;
   height: 35px;
@@ -49,17 +55,20 @@ body {
   background-color: #6feaf6;
 }
 
+/*Mark occupied seats*/
 .seat.occupied {
   background-color: black;
   cursor: not-allowed;
 }
 
+/*show seat status */
 .showcase {
   display: flex;
   justify-content: center;
   margin: 20px 0;
 }
 
+/* Individual items */
 .showcase li {
   display: flex;
   align-items: center;
@@ -76,16 +85,19 @@ body {
   margin-top: 10px;
 }
 
+/*requesting special accommodations */
 .special-accommodation {
   text-align: center;
   margin-top: 10px;
   font-size: 18px;
 }
 
+/* Label styling for accommodation*/
 .special-accommodation label {
   font-size: 18px;
 }
 
+/* Dropdown for accommodation*/
 .special-accommodation select {
   margin-top: 8px;
   padding: 10px;
@@ -97,6 +109,7 @@ body {
   width: 220px;
 }
 
+/* Style 'Book Now'*/
 button.booknow {
   display: block;
   width: 50%;
@@ -110,6 +123,7 @@ button.booknow {
   cursor: pointer;
 }
 
+/* Darken on hover*/
 button.booknow:hover {
   background-color: #0194bb;
 }
@@ -132,6 +146,7 @@ a.link {
   margin-bottom: 20px;
 }
 
+/* Fade-in animation keyframes */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
